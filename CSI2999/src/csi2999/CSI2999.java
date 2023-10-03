@@ -8,6 +8,7 @@ public class CSI2999 {
                 new MainMenu();
                 }
         });
+        System.out.println();
     }
 }
 

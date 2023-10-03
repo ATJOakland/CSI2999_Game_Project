@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
+import javax.swing.SwingUtilities;
 
 
 
@@ -19,6 +20,7 @@ import javax.swing.BoxLayout;
 public class MainMenu extends JFrame {
     public MainMenu(){
         super("Start Screen");
+        BattleScreen battleScreen = new BattleScreen();
         
         // set my screen size
         setSize(800,600);
@@ -26,8 +28,11 @@ public class MainMenu extends JFrame {
         //slect color for the background
         Color backgroundColor = Color.BLUE; 
         
+        // creating vertical stacked buttons
         JPanel buttonLayout = new JPanel();
         buttonLayout.setLayout(new BoxLayout(buttonLayout, BoxLayout.Y_AXIS));
+        
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // setting boreder layout box
         JPanel screen = new JPanel(new BorderLayout());
@@ -39,11 +44,13 @@ public class MainMenu extends JFrame {
         title.setFont(new Font("Times", Font.BOLD, 36));
         
         // create the start button
-        JButton startButton = new JButton("Start Game");
+        JButton startButton = new JButton("Start Game" );
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "Game is starting!");
+                battleScreen.setVisible(true);
+                
                 
             }
         });
