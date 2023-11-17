@@ -1,12 +1,12 @@
-package swingPackage;
+package csi2999;
 
 import character.DefaultCharacter;
 
 public class CollisionCheck {
 	
-	SwingClass panel;
+	Level panel;
 	
-	public CollisionCheck(SwingClass panel) {
+	public CollisionCheck(Level panel) {
 		this.panel = panel;
 	}
 	
