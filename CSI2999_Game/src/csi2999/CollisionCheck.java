@@ -25,7 +25,7 @@ public class CollisionCheck {
 	public CollisionCheck(LevelFive panel) {
 		this.panel5 = panel;
 	}
-	public void checkTile(DefaultCharacter character) {
+	public void checkTileOne(DefaultCharacter character) {
 		int charLeftWorldX = character.posX + character.solidArea.x;
 		int charRightWorldX = character.posX + character.solidArea.x + character.solidArea.width;
 		int charTopWorldY = character.posY + character.solidArea.y;
