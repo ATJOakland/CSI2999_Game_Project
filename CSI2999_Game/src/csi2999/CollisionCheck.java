@@ -4,12 +4,27 @@ import character.DefaultCharacter;
 
 public class CollisionCheck {
 	
-	Level panel;
+	LevelOne panel;
+	LevelTwo panel;
+	LevelThree panel;
+	LevelFour panel;
+	LevelFive panel;
 	
-	public CollisionCheck(Level panel) {
+	public CollisionCheck(LevelOne panel) {
 		this.panel = panel;
 	}
-	
+	public CollisionCheck(LevelTwo panel) {
+		this.panel = panel;
+	}
+	public CollisionCheck(LevelThree panel) {
+		this.panel = panel;
+	}
+	public CollisionCheck(LevelFour panel) {
+		this.panel = panel;
+	}
+	public CollisionCheck(LevelFive panel) {
+		this.panel = panel;
+	}
 	public void checkTile(DefaultCharacter character) {
 		int charLeftWorldX = character.posX + character.solidArea.x;
 		int charRightWorldX = character.posX + character.solidArea.x + character.solidArea.width;
