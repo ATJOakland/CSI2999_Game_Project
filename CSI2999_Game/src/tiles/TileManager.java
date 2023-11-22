@@ -25,7 +25,7 @@ public class TileManager {
 		mapTileNumber = new int[levelOne.maxScreenColumnTiles][levelOne.maxScreenRowTiles];
 		
 		getTileImage();
-		loadMap("/maps/testMap.txt");
+		loadMap("/maps/levelOneMap.txt");
 	}
 	
 	// Loads in the tile images
@@ -42,6 +42,12 @@ public class TileManager {
 			
 			tile[3] = new Tile();
 			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/Dirt 16x16.png"));
+			
+			tile[4] = new Tile();
+			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/Red Brick 16x16.png"));
+			
+			tile[5] = new Tile();
+			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/wall.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
