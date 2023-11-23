@@ -28,6 +28,12 @@ public class LevelOne extends JPanel implements Runnable{
 	final int scale = 3; //For scaling up the tiles
 	public final int tileSize = defaultTileSize * scale; // Scales up or down the tile size.
 	
+	// setting a count and creating objects for the battle system.
+	private int battleCnt = 0;
+	private final int maxBattle = 4;
+	private boolean isBattleActive = false;
+	private RandomTimer battleTimer = new RandomTimer(5000, 9000);
+	private BattleScreen battle = new BattleScreen();
 	//Putting tiles on screen
 	public final int maxScreenColumnTiles = 16;
 	public final int maxScreenRowTiles = 12;
@@ -97,6 +103,25 @@ public class LevelOne extends JPanel implements Runnable{
 				drawCount = 0;
 				timer = 0;
 			}
+			
+			if(battleCnt <= maxBattle) {
+				if (battleTimer.isTimeUp() && !isBattleActive) {
+					System.out.println("turning on battle System");
+	                isBattleActive = true;
+	                battleTimer.pause();
+	                battle.setVisible(true);
+	                battleCnt ++;
+	                
+	            } else if (isBattleActive && battle.battleOver()) {
+	                isBattleActive = false;
+	                battle.setVisible(false);
+	                //battle.resetEnemy();
+	                battleTimer.resume();
+	                battleTimer.reset();
+	                // Perform any cleanup after the battle
+	                // ...
+	            }
+	            }
 		}
 	}
 	

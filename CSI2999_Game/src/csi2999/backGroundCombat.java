@@ -1,141 +1,149 @@
 package csi2999;
 
-import java.util.Scanner ;
-
-
 public class backGroundCombat {
-    // this is will be called in based on enemies 
-    private int enemyHealth;
-    private int enemyAttack;
-    private int enemyDefense;
-    // this is be called in from char sheet
-    private int playerHealth;
-    private int playerAttack;
-    private int playerFireDmg;
-    private int playerDefense;
-    private int damage;
-    private int enemyDamage;
-    private String userInput;
-    
-    // creating my dice object
-    private randomNumberClass twentySideDice = new randomNumberClass();
-    
-    public void backGroundCombat(){
-        // left empty since this is the outline for combat. 
-        this.playerHealth = 200;
-        this.playerAttack = 10;
-        this.playerDefense = 10;
+	// this is will be called in based on enemies
+	private int enemyHealth;
+	private int enemyAttack;
+	private int enemyDefense;
+	// this is be called in from char sheet
+	private int playerHealth;
+	private int playerAttack;
+	private int playerFireDmg;
+	private int playerDefense;
+	private int diceRoll;
+	private int damage;
+	private int enemyDamage;
+	private int iceDmg;
+	private int fireDmg;
+	private int wtrDmg;
+	private String userInput;
+	private randomEncouterClass monster = new randomEncouterClass();
+	private characterClass player;
+	private EnemyClass enemy;
+	String monsterName;
+	// creating my dice object
+	private randomNumberClass twentySideDice = new randomNumberClass();
+
+	public backGroundCombat() {
+
+		// left empty since this is the outline for combat.
+		this.monsterName = monster.generateMonster();
+		enemy = new EnemyClass(1, this.monsterName);
+		player = new characterClass(1);
+		this.playerHealth = player.getPlayerHealth();
+		this.playerAttack = player.getPlayerAttack();
+		this.playerDefense = player.getPlayerDefense();
+		this.enemyHealth = 50;
+		this.enemyAttack = 2;
+		this.enemyDefense = 2;
+		this.iceDmg = player.getIceDmg();
+		this.fireDmg = player.getPlayerFireDmg();
+		this.wtrDmg = player.getWtrDmg();
+		this.diceRoll= 0;
+
+	}
+	private void rollDice() {
+		this.diceRoll = twentySideDice.getDiceRoll();
+	}
+	public int getDiceRoll() {
+		return this.diceRoll;
+	}
+	
+	public int maxHealthPly() {
+		return player.getPlayerHealth();
+	}
+	private void setPlayerAttack() {
+		rollDice();
+		this.damage = this.diceRoll + this.playerAttack;
+
+	}
+
+	public int getPlayerAttack() {
+		setPlayerAttack();
+		return damage;
+	}
+
+	public void setEnemyHealth(int damage) {
+		this.enemyHealth = enemyHealth - damage;
+
+	}
+
+	public int getEnemyHealth() {
+		return enemyHealth;
+	}
+
+	public void setAtkEnemy() {
+		this.enemyDamage = twentySideDice.getDiceRoll() + enemyAttack;
+	}
+
+	public int getEnenmyAtk() {
+		setAtkEnemy();
+		return enemyDamage;
+	}
+
+	public void setPlyhealth(int damage) {
+		this.playerHealth = playerHealth - damage;
+	}
+
+	public int getPlyHlth() {
+		return playerHealth;
+	}
+
+	public int setIceDmg(int dmg, int bonus) {
+		int iceDmg;
+		iceDmg = this.iceDmg + dmg + bonus;
+		return iceDmg;
+	}
+
+	public int setFireDmg(int dmg, int bonus) {
+		int fireDmg;
+		fireDmg = this.fireDmg + dmg + bonus;
+		return fireDmg;
+	}
+
+	public int setWtrDmg(int dmg, int bonus) {
+		int wtrDmg;
+		wtrDmg = this.wtrDmg + dmg + bonus;
+		return wtrDmg;
+	}
+
+	public int setDefend() {
+		int defenseDamage;
+		int defenseboost = 10;
+		defenseDamage = getEnenmyAtk() - this.playerDefense - defenseboost;
+		if (defenseDamage < 0) {
+			defenseDamage = 0;
+		}
+		setPlyhealth(defenseDamage);
+		return defenseDamage;
+	}
+
+	public boolean deadOrAlive(int health) {
+		if (health <= 0) {
+			return false;
+		} else
+			return true;
+	}
+
+	public String getMonsterName() {
+		return this.monsterName;
+	}
+	public void SetEnemyHealthBack() {
+		this.enemyHealth = 50;
+	}
+	public void resetCombat() {
+        this.monsterName = monster.generateMonster();
+        enemy = new EnemyClass(1, this.monsterName);
+        player = new characterClass(1);
+        this.playerHealth = player.getPlayerHealth();
+        this.playerAttack = player.getPlayerAttack();
+        this.playerDefense = player.getPlayerDefense();
         this.enemyHealth = 50;
         this.enemyAttack = 2;
         this.enemyDefense = 2;
+        this.iceDmg = player.getIceDmg();
+        this.fireDmg = player.getPlayerFireDmg();
+        this.wtrDmg = player.getWtrDmg();
+    }
 
-
-}
- /*   public void setTurn(){
-        
-        // this will be replaced by user selection
-        Scanner input = new Scanner(System.in);
-        boolean alive = true;
-        do{
-            // this will be replaced by on screen selection but rough outline
-            System.out.println("Please enter if you would like to attack or defend?");
-            userInput = input.nextLine();
-            playerTurn();
-            alive = checkHealth();
-            if (alive == false){continue;}
-            enemyTurn();  
-            alive = checkHealth();
-        }while(alive == true);
-        
-        
-    }
-        
-    private boolean checkHealth(){
-        //while ((playerHealth > 0) || (enemyHealth > 0)){
-        
-        if (playerHealth < 1){
-                // game over screen
-            System.out.println("Game Over");
-            return false;
-                }
-        else if (enemyHealth < 1)    {
-                // return back to level
-            System.out.println("You win");
-            return false;
-                }
-        else{
-            return true;
-        }
-    }
-    
-    private void playerTurn(){
-        int[] player = {playerAttack, playerFireDmg, playerFireDmg, playerFireDmg,
-            playerFireDmg, playerDefense};
-            
-        int damage = 0;
-        if(userInput.toLowerCase().startsWith("a")){
-            damage = twentySideDice.getDiceRoll() + playerAttack;           
-        }
-        else if (userInput.toLowerCase().startsWith("f")){
-            damage = twentySideDice.getDiceRoll() + playerFireDmg;
-        }
-        else if (userInput.toLowerCase().startsWith("i")){
-            // ice damage
-            damage = twentySideDice.getDiceRoll() + playerFireDmg;
-        }
-        else if (userInput.toLowerCase().startsWith("t")){
-            // thunder damage
-            damage = twentySideDice.getDiceRoll() + playerFireDmg;
-        }
-        else if (userInput.toLowerCase().startsWith("p")){
-            // item usage
-            int potion = 10;
-            playerHealth = playerHealth + 20;
-        }
-        else if (userInput.toLowerCase().startsWith("d")){
-            // item usage         
-            playerDefense = playerDefense + 5;
-        }
-        enemyHealth = enemyHealth - damage;
-        if (enemyHealth < 0){enemyHealth = 0;}
-        System.out.println("Damge:" + damage + " Enemy Health Remaining: " + enemyHealth);
-    }
-    private void enemyTurn(){
-        int damage = 0;
-            damage = twentySideDice.getDiceRoll() + enemyAttack;    
-            playerHealth = playerHealth - damage;
-            if (playerHealth < 0){playerHealth = 0;}
-            System.out.println("Damge:" + damage + " Player Health Remaining: " + playerHealth);
-        }*/
-   private void setPlayerAttack(){
-       this.damage = twentySideDice.getDiceRoll() + playerAttack;
-     
-   }
-   public int getPlayerAttack(){
-       setPlayerAttack();
-       return damage;
-   }
-   public void setEnemyHealth(int damage){
-       this.enemyHealth = enemyHealth - playerAttack;
-      
-   }
-   public int getEnemyHealth(){
-       return enemyHealth;
-   }
-   
-   public void setAtkEnemy(){
-       this.enemyDamage = twentySideDice.getDiceRoll() + enemyAttack;
-   }
-   public int getEnenmyAtk(){
-       setAtkEnemy();
-       return enemyDamage;
-   }
-   public void setPlyhealth(){
-       this.playerHealth = playerHealth - enemyDamage;
-   }
-   public int getPlyHlth(){
-       return playerHealth;
-   }
-   
-   
 }
