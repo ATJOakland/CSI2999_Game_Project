@@ -16,29 +16,55 @@ public class BattleScreen extends JFrame {
 	private JButton thunderButton;
 	private JButton itemButton;
 	private JButton escapeButton;
-	private backGroundCombat battle = new backGroundCombat();
+	private backGroundCombat battle, Orc, Pirate, Goblin;
 	private JPanel buttonPanel;
 	private JPanel invtButtonPanel;
 	private ImageIcon playerSprite;
 	private ImageIcon enemySprite;
-	private JLabel damageBox;
 	private JPanel damagePanel;
-	private JLabel damageButton;
 	private String monsterName;
-
+	private JLabel playerRollLabel;
+    private JLabel enemyRollLabel;
+    private JLabel playerDamageLabel;
+    private JLabel enemyDamageLabel;
+    private String emyRoll, emyDmg; 
 	private boolean playerTurn = false;
 	private boolean cpuTurn = false;
 	private int dmg = 0;
 
-	public BattleScreen() {
+	public BattleScreen(int level) {
 		setTitle("Get ready to fight");
 		setSize(800, 600);
 
-	
+		battle = new backGroundCombat(level);
+
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.setBackground(Color.BLACK);
+		
+		//creating center Panel
+		damagePanel = new JPanel();
+	    damagePanel.setLayout(new BoxLayout(damagePanel, BoxLayout.Y_AXIS)); // Setting layout
+	    damagePanel.setBackground(Color.yellow);
+	    
+	    // Initialize the labels
+	    String plyRoll, plyDmg ;
+	    plyRoll = "Player Roll: ";
+	    this.emyRoll = "Enemy Roll: ";
+	    plyDmg = "Player Damage to: ";
+	    this.emyDmg = "Enemy Damage to: ";
+        playerRollLabel = new JLabel(plyRoll);
+        enemyRollLabel = new JLabel(this.emyRoll);
+        playerDamageLabel = new JLabel(plyDmg);
+        enemyDamageLabel = new JLabel(this.emyDmg);
 
+       // Set font 
+        Font labelFont = new Font("Serif", Font.BOLD, 19);
+        playerRollLabel.setFont(labelFont);
+        enemyRollLabel.setFont(labelFont);
+        playerDamageLabel.setFont(labelFont);
+        enemyDamageLabel.setFont(labelFont);
+        
 		String resourcePath = "player.png";
 		playerSprite = new ImageIcon(BattleScreen.class.getResource(resourcePath));
 
@@ -53,22 +79,13 @@ public class BattleScreen extends JFrame {
 		player.setPreferredSize(new Dimension(300, 200));
                 
         monsterName = battle.getMonsterName();
+        
 
         enemySprite = new ImageIcon(BattleScreen.class.getResource(monsterName + ".png"));// file path for sprite need here
 		enemy = new JLabel(monsterName);// once we have a sprite rename this enemySprite
         enemy.setIcon(enemySprite);
 		enemy.setForeground(Color.red);
 		enemy.setPreferredSize(new Dimension(300, 200));
-
-		damageBox = new JLabel("");
-		damageBox.setForeground(Color.BLUE);
-		damageBox.setPreferredSize(new Dimension(100, 75));
-		damageBox.setBackground(Color.YELLOW);
-                
-        damageBox = new JLabel("");
-		damageBox.setForeground(Color.BLUE);
-		damageBox.setPreferredSize(new Dimension(100, 75));
-		damageBox.setBackground(Color.YELLOW);
 
 		damagePanel = new JPanel();
 		damagePanel.setLayout(new BoxLayout(damagePanel, BoxLayout.Y_AXIS));
@@ -94,10 +111,10 @@ public class BattleScreen extends JFrame {
 				
 				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
 				enemy.setText("Enemy Health" + battle.getEnemyHealth());
-				damageBox.setText(Integer.toString(battle.getDiceRoll()));
-				damageBox.setText(Integer.toString(dmg));
-				damageBox.setText(Integer.toString(dmg));
-
+				playerRollLabel.setText(plyRoll + Integer.toString(battle.getDiceRoll()));
+				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
+				
+				
 			}
 		});
 		defendButton = new JButton("Defend");
@@ -165,21 +182,15 @@ public class BattleScreen extends JFrame {
 		escapeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent a) {
+				int roll;
+				roll = battle.getDiceRoll();
+				if(roll % 2 == 1) {
+					battleOver(true);
+				}
                             
 			}
 		});
 
-		JLabel damageLabel = new JLabel("DICE ROLL");
-		damageLabel.setPreferredSize(new Dimension(200, 50));
-		damageLabel.setFont(new Font("Serif", Font.BOLD, 24));
-                
-        JLabel enemyDmg = new JLabel("Enemy Damage to Player");
-		damageLabel.setPreferredSize(new Dimension(200, 50));
-		damageLabel.setFont(new Font("Serif", Font.BOLD, 24));
-                
-		JLabel plyDmg = new JLabel("Player Damage to Enemy");
-		damageLabel.setPreferredSize(new Dimension(200, 50));
-		damageLabel.setFont(new Font("Serif", Font.BOLD, 24));
 
 		buttonPanel.add(attackButton);
 		buttonPanel.add(defendButton);
@@ -188,10 +199,13 @@ public class BattleScreen extends JFrame {
 		buttonPanel.add(itemButton);
 		buttonPanel.add(escapeButton);
 
-		damagePanel.add(damageLabel);
-		damagePanel.add(damageBox);
-        damagePanel.add(enemyDmg);
-                
+        
+		// Add labels to the panel
+        damagePanel.add(playerRollLabel);
+        damagePanel.add(enemyRollLabel);
+        damagePanel.add(playerDamageLabel);
+        damagePanel.add(enemyDamageLabel);
+
 
 		mainPanel.add(damagePanel, BorderLayout.CENTER);
 		mainPanel.add(player, BorderLayout.WEST);
@@ -202,12 +216,19 @@ public class BattleScreen extends JFrame {
 		add(mainPanel);
 	}
 
-	public boolean battleOver() {
+	public boolean battleOver(boolean escape) {
 		if (battle.deadOrAlive(battle.getEnemyHealth()) == false) {
 			setVisible(false);
-			resetEnemy();
+			battle.resetCombat();
+			JOptionPane.showMessageDialog(null, "Enemy Defeated!");
 			return true;
-		} else
+		}else if(escape == true) {
+			setVisible(false);
+			battle.resetCombat();
+			JOptionPane.showMessageDialog(null, "Escaped");
+			return true;
+		}
+		else
 			return false;
 	}
 
@@ -217,32 +238,32 @@ public class BattleScreen extends JFrame {
 			battle.setEnemyHealth(dmg);
 			playerTurn = true;
 			cpuTurn = false;
-			battleOver();
+			battleOver(false);
 		} else {
 			System.out.println("Please wait for cpu turn!");
 		}
 	}
 
 	public void enemyTurn() {
-		int emyDmg = battle.getEnenmyAtk();
+		int emyDmg;
+		
+		emyDmg = battle.getEnenmyAtk();
+		enemyRollLabel.setText(this.emyRoll + Integer.toString(battle.getEmyDiceRoll()));
 		if (cpuTurn == false) {
                         try {
                             Thread.sleep(1000);
                           } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                           }
-			battle.setPlyhealth(dmg);
+			battle.setPlyhealth(emyDmg);
+			enemyDamageLabel.setText(this.emyDmg + Integer.toString(emyDmg));
+			battleOver(false);
 			playerTurn = false;
 			cpuTurn = true;
-			battleOver();
 		} else {
 			System.out.println("Please wait for cpu turn!");
 		}
 	}
 	
-	public void resetEnemy() {
-		battle.resetCombat();
-	}
-
 }
 

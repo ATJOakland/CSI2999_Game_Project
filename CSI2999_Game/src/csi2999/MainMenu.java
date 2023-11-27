@@ -47,7 +47,9 @@ public class MainMenu extends JFrame {
                 JOptionPane.showMessageDialog(null, "Game is starting!");
                 //BattleScreen battleScreen = new BattleScreen();
                 //battleScreen.setVisible(true);
-                
+                //set resetHealth back to 200;
+                characterClass resetHealth = new characterClass(0);
+                resetHealth.setCurrentHealth(200);
                 // Create instance of the Level One Class and start it
                 LevelOne levelOne = new LevelOne();
                 // Create the JFrame for Level one

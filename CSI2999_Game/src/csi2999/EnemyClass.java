@@ -1,80 +1,59 @@
 package csi2999;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;;
 
 public class EnemyClass {
 	private String filePath;
-	private List<Integer> integers;
+
 	private int enemyHealth;
 	private int enemyDefense;
 	private int enemyAttack;
-	private String type;
+
 
 	public EnemyClass(int level, String type) {
-		this.enemyAttack = enemyHealth + (level - 1) * 50;
-		this.enemyDefense = enemyDefense + (level - 1) * 2;
-		this.enemyHealth = enemyHealth + (level - 1) * 3;
-		this.type = type;
-		this.filePath = filePath;
-		this.integers = new ArrayList<>();
+		// Load the stats from the file
+		this.filePath = "csi2999/Enemy.txt";
+        int[] stats = loadEnemyStats(type);
+        
+		this.enemyAttack = stats[0] + (level - 1) * 50;
+		this.enemyDefense = stats[2] + (level - 1) * 2;
+		this.enemyHealth = stats[1] + (level - 1) * 3;
+	
 	}
 
 	public int getEnemyHealth() {
-		return enemyHealth;
-	}
-
-	public void setEnemyHealth(int enemyHealth) {
-		this.enemyHealth = enemyHealth;
+		return this.enemyHealth;
 	}
 
 	public int getEnemyDefense() {
-		return enemyDefense;
-	}
-
-	public void setEnemyDefense(int enemyDefense) {
-		this.enemyDefense = enemyDefense;
+		return this.enemyDefense;
 	}
 
 	public int getEnemyAttack() {
-		return enemyAttack;
+		return this.enemyAttack;
 	}
 
-	public void setEnemyAttack(int enemyAttack) {
-		this.enemyAttack = enemyAttack;
-	}
+	public int[] loadEnemyStats(String enemyType) {
+        int[] stats = new int[3]; // To hold health, attack, and defense
 
-	public void readAndLoadIntegers() {
-		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-			String line;
-			boolean headerProcessed = false;
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(this.filePath);
+        if (inputStream == null) {
+            System.err.println("File not found: " + this.filePath);
+            return stats; // Return default stats or consider throwing an exception
+        }
 
-			while ((line = reader.readLine()) != null) {
-				String[] variables = line.split(",");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            // ... rest of your method ...
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
 
-				if (!headerProcessed) {
-					headerProcessed = true;
-				} else {
-					for (String variable : variables) {
-						if (variable.trim().startsWith(this.type)) {
-							String integerPart = variable.trim().substring(4);
-							int intValue = Integer.parseInt(integerPart);
-							integers.add(intValue);
-						}
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-	}
-
-	public List<Integer> getIntegers() {
-		return integers;
-	}
+        return stats;
+    }
+	
 
 }

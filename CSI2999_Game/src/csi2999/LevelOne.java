@@ -33,7 +33,7 @@ public class LevelOne extends JPanel implements Runnable{
 	private final int maxBattle = 4;
 	private boolean isBattleActive = false;
 	private RandomTimer battleTimer = new RandomTimer(5000, 9000);
-	private BattleScreen battle = new BattleScreen();
+	private BattleScreen battle = new BattleScreen(1);
 	//Putting tiles on screen
 	public final int maxScreenColumnTiles = 16;
 	public final int maxScreenRowTiles = 12;
@@ -112,14 +112,13 @@ public class LevelOne extends JPanel implements Runnable{
 	                battle.setVisible(true);
 	                battleCnt ++;
 	                
-	            } else if (isBattleActive && battle.battleOver()) {
+	            } else if (isBattleActive && battle.battleOver(false)) {
 	                isBattleActive = false;
 	                battle.setVisible(false);
 	                //battle.resetEnemy();
 	                battleTimer.resume();
 	                battleTimer.reset();
-	                // Perform any cleanup after the battle
-	                // ...
+	                
 	            }
 	            }
 		}

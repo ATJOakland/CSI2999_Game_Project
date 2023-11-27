@@ -1,8 +1,12 @@
 package csi2999;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.FileWriter;
+import java.net.URL;
+
 
 public class characterClass {
 	private int playerMaxHealth;
@@ -12,18 +16,19 @@ public class characterClass {
 	private int iceDmg;
 	private int level;
 	private int currentHealth;
+	
 	private int wtrDmg;
 	private final String filePath;
 
 	public characterClass(int level) {
-		filePath = "Health.txt";
+		this.filePath = "csi2999/Health.txt";
 		this.level = level;
 		this.playerMaxHealth = 200 + (level - 1) * 50; // Base health plus extra per level
 		this.playerAttack = 5 + (level - 1) * 3; // Default value, can be modified later
 		this.playerFireDmg = 6 + (level - 1) * 2; // Default value, can be modified later
 		this.playerDefense = 3 + (level - 1) * 4; // Default value, can be modified later
 		this.iceDmg = 3 + (level - 1) * 3; // Default value, can be modified later
-		this.currentHealth = readCurrentHealthFromFile(filePath);
+		this.currentHealth = readCurrentHealthFromFile();
 		this.wtrDmg = 4 + (level - 1) * 3; //
 	}
 
@@ -39,7 +44,7 @@ public class characterClass {
 		return playerMaxHealth;
 	}
 
-	public void setPlayerHealth(int health) {
+	public void setPlayerMaxHealth(int health) {
 		this.playerMaxHealth = health;
 	}
 
@@ -82,27 +87,64 @@ public class characterClass {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-
-	public int readCurrentHealthFromFile(String filePath) {
-		int readHealth = this.playerMaxHealth; // Default value
-
-		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-			String line = reader.readLine();
-			if (line != null) {
-				readHealth = Integer.parseInt(line.trim());
-			} else {
-				System.out.println("File is empty. Defaulting current health.");
+	public int heal (int healAmount) {
+		int difference;
+		difference = this.playerMaxHealth - this.currentHealth  ;
+		if(difference < healAmount ) {
+			this.currentHealth = this.currentHealth + difference;
+			if(this.currentHealth > this.playerMaxHealth) {
+				this.currentHealth = this.playerMaxHealth;
 			}
-		} catch (IOException e) {
-			System.out.println("Error reading file: " + e.getMessage());
-		} catch (NumberFormatException e) {
-			System.out.println("Invalid number format in file: " + e.getMessage());
+			return difference;
 		}
-
-		return readHealth; // Return the read or default health value
+		this.currentHealth = this.currentHealth + healAmount;
+		return healAmount;
 	}
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	public void setCurrentHealth(int currentHealth) {
+		this.currentHealth = currentHealth;
+	}
+
 	
 
+	public int readCurrentHealthFromFile() {
+	    int readHealth = this.playerMaxHealth; // Default value
+
+	    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(this.filePath);
+	         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+	        String line = reader.readLine();
+	        if (line != null) {
+	            readHealth = Integer.parseInt(line.trim());
+	        } else {
+	            System.out.println("File is empty. Defaulting current health.");
+	        }
+	    } catch (IOException e) {
+	        System.out.println("Error reading file: " + e.getMessage());
+	    } catch (NumberFormatException e) {
+	        System.out.println("Invalid number format in file: " + e.getMessage());
+	    }
+
+	    return readHealth; // Return the read or default health value
+	}
+
+	public void saveToCsvFile(int data) {
+		URL fileUrl = getClass().getResource("Health.txt");
+	    if (fileUrl == null) {
+	        System.out.println("File not found in the package.");
+	        return;
+	    }
+
+	    try (FileWriter writer = new FileWriter(fileUrl.getPath())) {
+	    	writer.write(String.valueOf(data));
+
+	    } catch (IOException e) {
+	        System.out.println("An error occurred while writing to the CSV file: " + e.getMessage());
+	    }
+	    }
 	@Override
 	public String toString() {
 		return "characterClass{" + "playerHealth=" + playerMaxHealth + ", playerAttack=" + playerAttack

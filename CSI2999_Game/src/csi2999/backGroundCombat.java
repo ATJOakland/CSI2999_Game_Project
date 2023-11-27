@@ -10,37 +10,43 @@ public class backGroundCombat {
 	private int playerAttack;
 	private int playerFireDmg;
 	private int playerDefense;
-	private int diceRoll;
+	private int diceRoll, emyDiceRoll;
 	private int damage;
 	private int enemyDamage;
 	private int iceDmg;
 	private int fireDmg;
 	private int wtrDmg;
-	private String userInput;
+	
 	private randomEncouterClass monster = new randomEncouterClass();
 	private characterClass player;
 	private EnemyClass enemy;
 	String monsterName;
 	// creating my dice object
 	private randomNumberClass twentySideDice = new randomNumberClass();
-
-	public backGroundCombat() {
+	public backGroundCombat(int level) {
 
 		// left empty since this is the outline for combat.
 		this.monsterName = monster.generateMonster();
-		enemy = new EnemyClass(1, this.monsterName);
-		player = new characterClass(1);
-		this.playerHealth = player.getPlayerHealth();
+		enemy = new EnemyClass(level, this.monsterName);
+		player = new characterClass(level);
+		this.playerHealth = player.getCurrentHealth();
 		this.playerAttack = player.getPlayerAttack();
 		this.playerDefense = player.getPlayerDefense();
-		this.enemyHealth = 50;
-		this.enemyAttack = 2;
-		this.enemyDefense = 2;
+		this.enemyHealth = 50;//enemy.getEnemyHealth();
+		this.enemyAttack = 2;//enemy.getEnemyAttack();
+		this.enemyDefense = 2;//enemy.getEnemyDefense();
 		this.iceDmg = player.getIceDmg();
 		this.fireDmg = player.getPlayerFireDmg();
 		this.wtrDmg = player.getWtrDmg();
 		this.diceRoll= 0;
+		this.emyDiceRoll = 0;
 
+	}
+	public int getEmyDiceRoll() {
+		return this.emyDiceRoll;
+	}
+	public void setEmyDiceRoll() {
+		this.emyDiceRoll = twentySideDice.getDiceRoll();
 	}
 	private void rollDice() {
 		this.diceRoll = twentySideDice.getDiceRoll();
@@ -54,7 +60,7 @@ public class backGroundCombat {
 	}
 	private void setPlayerAttack() {
 		rollDice();
-		this.damage = this.diceRoll + this.playerAttack;
+		this.damage = this.diceRoll + this.playerAttack - this.enemyDefense;
 
 	}
 
@@ -64,7 +70,7 @@ public class backGroundCombat {
 	}
 
 	public void setEnemyHealth(int damage) {
-		this.enemyHealth = enemyHealth - damage;
+		this.enemyHealth = enemyHealth - this.damage;
 
 	}
 
@@ -73,7 +79,8 @@ public class backGroundCombat {
 	}
 
 	public void setAtkEnemy() {
-		this.enemyDamage = twentySideDice.getDiceRoll() + enemyAttack;
+		setEmyDiceRoll();
+		this.enemyDamage = this.emyDiceRoll + this.enemyAttack - this.playerDefense;
 	}
 
 	public int getEnenmyAtk() {
@@ -83,6 +90,7 @@ public class backGroundCombat {
 
 	public void setPlyhealth(int damage) {
 		this.playerHealth = playerHealth - damage;
+		player.saveToCsvFile(this.playerHealth);
 	}
 
 	public int getPlyHlth() {
