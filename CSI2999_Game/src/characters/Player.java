@@ -21,7 +21,7 @@ public class Player extends DefaultCharacter {
 	public void SetDefaultValues() {
 		// These are defined in the DefaultCharacter class
 		posX = 100;
-		posY = 100;
+		posY = 60;
 		characterSpeed = 4;
 	}
 	

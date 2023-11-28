@@ -74,7 +74,8 @@ public class LevelOne extends JPanel implements Runnable{
 	@Override
 	public void run() {
 		// Variables for setting FPS and only updating on that FPS, and preventing infinite updates
-		double drawInterval = 1000000000/FPS; // 9 Zeroes. 1 nano-second. This is dividing 1Billion nanoseconds by 60 so that it limits the FPS.
+		int nanoSecond = 1000000000;
+		double drawInterval = nanoSecond/FPS; // 9 Zeroes. 1 nano-second. This is dividing 1Billion nanoseconds by 60 so that it limits the FPS.
 		double delta = 0;
 		long lastTime = System.nanoTime();
 		long currentTime;
@@ -98,7 +99,7 @@ public class LevelOne extends JPanel implements Runnable{
 			}
 			
 			// Reset the draw count and timer. And also print out the current FPS.
-			if (timer >= 1000000000) {
+			if (timer >= nanoSecond) {
 				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
@@ -120,7 +121,7 @@ public class LevelOne extends JPanel implements Runnable{
 	                battleTimer.reset();
 	                
 	            }
-	            }
+			}
 		}
 	}
 	
@@ -131,7 +132,10 @@ public class LevelOne extends JPanel implements Runnable{
 	 */
 	public void update() {
 		// Checks the player's movement
-		player.update(); // Player's movement is handled in the Player class in characters
+		// If NOT in a battle then update the player
+		if(!isBattleActive) {
+			player.update(); // Player's movement is handled in the Player class in characters
+		}
 	}
 	
 	/*
