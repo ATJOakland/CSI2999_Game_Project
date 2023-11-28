@@ -133,8 +133,18 @@ public class LevelOne extends JPanel implements Runnable{
 	public void update() {
 		// Checks the player's movement
 		// If NOT in a battle then update the player
-		if(!isBattleActive) {
+		if(isBattleActive == false) {
 			player.update(); // Player's movement is handled in the Player class in characters
+		}
+		else if (isBattleActive == true) { // If Battle activates then stop all movement from the player until it's over
+			if (userInput.isPressingDown || userInput.isPressingUp || userInput.isPressingLeft || userInput.isPressingRight == true) {
+				userInput.isPressingDown = false;
+				userInput.isPressingUp = false;
+				userInput.isPressingLeft = false;
+				userInput.isPressingRight = false;
+			}
+			
+			player.stopMovement();
 		}
 	}
 	

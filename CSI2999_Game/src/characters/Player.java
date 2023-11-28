@@ -22,6 +22,10 @@ public class Player extends DefaultCharacter {
 		// These are defined in the DefaultCharacter class
 		posX = 100;
 		posY = 60;
+		
+		tempPosX = posX;
+		tempPosY = posY;
+		
 		characterSpeed = 4;
 	}
 	
@@ -34,16 +38,28 @@ public class Player extends DefaultCharacter {
 		 * */
 		if(userInput.isPressingUp == true) {
 			posY -= characterSpeed;
+			tempPosY = posY;
 		}
 		else if(userInput.isPressingDown == true) {
 			posY += characterSpeed;
+			tempPosY = posY;
 		}
 		else if(userInput.isPressingRight == true) {
 			posX += characterSpeed;
+			tempPosX = posX;
 		}
 		else if(userInput.isPressingLeft == true) {
 			posX -= characterSpeed;
+			tempPosX = posX;
 		}
+	}
+	
+	public void stopMovement() {
+		// Checks the player's movement
+		/* Stops all movement completely.
+		 * */
+		posX = tempPosX;
+		posY = tempPosY;
 	}
 	
 	public void draw(Graphics2D g2) {
