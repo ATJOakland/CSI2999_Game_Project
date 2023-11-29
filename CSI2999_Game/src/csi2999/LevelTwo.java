@@ -11,6 +11,11 @@ import character.Player;
 public class LevelTwo extends JPanel implements Runnable {
 	public final int maxScreenCol = 48;
 	public final int maxScreenRow = 48;
+	private int battleCnt = 0;
+	private final int maxBattle = 4;
+	private boolean isBattleActive = false;
+	private RandomTimer battleTimer = new RandomTimer(5000, 9000);
+	private BattleScreen battle = new BattleScreen(1);
 	public final int originalTileSize = 16;
 	final int scale = 1;
 	public final int tileSize = originalTileSize * scale;
