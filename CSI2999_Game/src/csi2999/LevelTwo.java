@@ -89,7 +89,19 @@ public class LevelTwo extends JPanel implements Runnable {
 	}
 	
 	public void update() {
-		player.update();
+		if(isBattleActive == false) {
+			player.update(); // Player's movement is handled in the Player class in characters
+		}
+		else if (isBattleActive == true) { // If Battle activates then stop all movement from the player until it's over
+			if (userInput.isPressingDown || userInput.isPressingUp || userInput.isPressingLeft || userInput.isPressingRight == true) {
+				userInput.isPressingDown = false;
+				userInput.isPressingUp = false;
+				userInput.isPressingLeft = false;
+				userInput.isPressingRight = false;
+			}
+			
+			player.stopMovement();
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
