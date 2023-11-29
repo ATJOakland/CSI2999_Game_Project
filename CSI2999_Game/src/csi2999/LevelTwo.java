@@ -68,6 +68,23 @@ public class LevelTwo extends JPanel implements Runnable {
 				drawCount = 0;
 				timer = 0;
 			}
+
+			if(battleCnt <= maxBattle) {
+				if (battleTimer.isTimeUp() && !isBattleActive) {
+					System.out.println("turning on battle System");
+	                isBattleActive = true;
+	                battleTimer.pause();
+	                battle.setVisible(true);
+	                battleCnt ++;
+	                
+	            } else if (isBattleActive && battle.battleOver(false)) {
+	                isBattleActive = false;
+	                battle.setVisible(false);
+	                //battle.resetEnemy();
+	                battleTimer.resume();
+	                battleTimer.reset();
+	                
+	            }
 		}				
 	}
 	
