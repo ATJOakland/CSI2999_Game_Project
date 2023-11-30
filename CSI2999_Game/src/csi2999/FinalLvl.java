@@ -142,7 +142,7 @@ import tiles.TileManager;
 		        add(scrollPane, BorderLayout.CENTER);
 
 		        // Specify the path to your text file
-		        String filePath = "C:/Users/typhoon/Desktop/Lvl1Txt.txt";
+		        String filePath = "/csi2999/FinalLvlTxt.txt";
 
 		        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 		            String line;
