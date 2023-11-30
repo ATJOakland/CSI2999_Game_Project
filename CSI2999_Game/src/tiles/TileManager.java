@@ -25,7 +25,7 @@ public class TileManager {
 		mapTileNumber = new int[levelOne.maxScreenColumnTiles][levelOne.maxScreenRowTiles];
 		
 		getTileImage();
-		loadMap("/maps/levelOneMap.txt");
+		loadMap("/maps/levelThreeMap.txt");
 	}
 	
 	// Loads in the tile images

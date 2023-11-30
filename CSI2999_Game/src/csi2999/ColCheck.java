@@ -1,4 +1,4 @@
-package swingPackage;
+package csi2999;
 
 import character.DefaultCharacter;
 

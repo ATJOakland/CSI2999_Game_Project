@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import csi2999.LevelOne;
+import csi2999.LevelTwo;
 import csi2999.UserInput;
 
 public class Player extends DefaultCharacter {
@@ -17,7 +18,7 @@ public class Player extends DefaultCharacter {
 		
 		SetDefaultValues(); //Sets the defaults
 	}
-	
+
 	public void SetDefaultValues() {
 		// These are defined in the DefaultCharacter class
 		posX = 100;

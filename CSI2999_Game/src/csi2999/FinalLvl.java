@@ -1,17 +1,18 @@
 package csi2999;
-	import javax.swing.SwingUtilities;
-	import javax.swing.JFrame;
-	import javax.swing.JPanel;
-	import java.awt.Color;
-	import java.awt.Dimension;
-	import java.awt.Graphics;
-	import java.awt.Graphics2D;
 
-	import characters.NPC;
-	import characters.Player;
-	import tiles.TileManager;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import tiles.TileManager;
+import characters.Player;
 
-	public class FinalLvl extends JPanel implements Runnable{
+public class FinalLvl extends JPanel implements Runnable{
 		// Creates window
 		public final int defaultTileSize = 16; // ALL tiles are 16x16 size. This is the standard tile size for most games
 		final int scale = 3; //For scaling up the tiles

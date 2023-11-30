@@ -30,7 +30,7 @@ public class MainMenu extends JFrame {
         
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // setting boreder layout box
+        // setting border layout box
         JPanel screen = new JPanel(new BorderLayout());
         
         screen.setBackground(backgroundColor);
