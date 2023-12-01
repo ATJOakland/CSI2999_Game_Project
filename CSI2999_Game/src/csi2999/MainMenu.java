@@ -14,7 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.SwingUtilities;
 
+import characters.Player;
+
 public class MainMenu extends JFrame {
+	Player player;
+	
     public MainMenu(){
         super("Start Screen");
         
@@ -36,7 +40,7 @@ public class MainMenu extends JFrame {
         screen.setBackground(backgroundColor);
        
         // create the title label
-        JLabel title = new JLabel("CSI299", SwingConstants.CENTER);
+        JLabel title = new JLabel("CSI2999", SwingConstants.CENTER);
         title.setFont(new Font("Times", Font.BOLD, 36));
         
         // create the start button
@@ -50,20 +54,20 @@ public class MainMenu extends JFrame {
                 //set resetHealth back to 200;
                 characterClass resetHealth = new characterClass(0);
                 resetHealth.setCurrentHealth(200);
-                // Create instance of the Level One Class and start it
-                LevelOne levelOne = new LevelOne();
-                // Create the JFrame for Level one
-                JFrame levelOneFrame = new JFrame("Level One");
-                levelOneFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close the frame only
-                //Add the Level One panel to JFrame
-                levelOneFrame.add(levelOne);
+                // Create instance of the Game Panel Class and start it
+                GamePanel gamePanel = new GamePanel();
+                // Create the JFrame for Game Panel
+                JFrame gamePanelFrame = new JFrame("Game");
+                gamePanelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close the frame only
+                //Add the Game panel to JFrame
+                gamePanelFrame.add(gamePanel);
                 //Set size and visibility of the frame
-                levelOneFrame.setSize(levelOne.getPreferredSize());
-                levelOneFrame.pack(); // This will set the frame size based on LevelOne's preferred size
-                levelOneFrame.setLocationRelativeTo(null);
-                levelOneFrame.setVisible(true);
-                // Starts the level
-                levelOne.start();
+                gamePanelFrame.setSize(gamePanel.getPreferredSize());
+                gamePanelFrame.pack(); // This will set the frame size based on LevelOne's preferred size
+                gamePanelFrame.setLocationRelativeTo(null);
+                gamePanelFrame.setVisible(true);
+                // Starts the level (first level, first)
+                gamePanel.start(0); //currentLevel is in the Player.java by default
             }
         });
         

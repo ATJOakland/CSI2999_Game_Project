@@ -29,7 +29,7 @@ public class characterClass {
 		this.playerDefense = 3 + (level - 1) * 4; // Default value, can be modified later
 		this.iceDmg = 3 + (level - 1) * 3; // Default value, can be modified later
 		this.currentHealth = readCurrentHealthFromFile();
-		this.wtrDmg = 4 + (level - 1) * 3; //
+		this.wtrDmg = 4 + (level - 1) * 3;
 	}
 
 	public int getWtrDmg() {

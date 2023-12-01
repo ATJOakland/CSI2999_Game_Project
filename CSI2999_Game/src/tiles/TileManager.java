@@ -5,27 +5,59 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import csi2999.LevelOne;
+import csi2999.GamePanel;
 
 public class TileManager {
-	
-	LevelOne levelOne;
+	GamePanel gamePanel;
 	Tile[]  tile;
 	
 	int mapTileNumber[][];
+
+    public int winTileX ;
+    public int winTileY;
 	
-	public TileManager(LevelOne levelOne){
-		this.levelOne = levelOne;
+	// For start() in the game panel. 0 loads map 1, 1 loads map 2, 2 loads 3, 3 loads final map.
+    public TileManager(GamePanel gamePanel, int mapNumber){
+	    System.out.println("Map Number in TileManager: " + mapNumber);
+		this.gamePanel = gamePanel;
 		
 		tile = new Tile[10];
 		
-		mapTileNumber = new int[levelOne.maxScreenColumnTiles][levelOne.maxScreenRowTiles];
+		mapTileNumber = new int[gamePanel.maxScreenColumnTiles][gamePanel.maxScreenRowTiles];
 		
-		getTileImage();
-		loadMap("/maps/levelThreeMap.txt");
+		// Map Dictionary
+		Map<String, String> mapPaths = new HashMap<String, String>() {{
+            put("levelOne", "/maps/levelOneMap.txt");
+            put("levelTwo", "/maps/levelTwoMap.txt");
+            put("levelThree", "/maps/levelThreeMap.txt");
+            put("levelFour", "/maps/finallvlmap.txt");
+        }};
+
+        getTileImage();
+        
+        // Switch of which map to load
+        switch (mapNumber) {
+        	case 0:
+                loadMap(mapPaths.get("levelOne"));
+                break;
+        	case 1:
+                loadMap(mapPaths.get("levelTwo"));
+                break;
+        	case 2:
+                loadMap(mapPaths.get("levelThree"));
+                break;
+        	case 3:
+                loadMap(mapPaths.get("levelFour"));
+                break;
+            default:	// Load level 1 by default if something else chosen
+                loadMap(mapPaths.get("levelOne"));
+                break;
+        }
 	}
 	
 	// Loads in the tile images
@@ -61,11 +93,11 @@ public class TileManager {
 			int column = 0;
 			int row = 0;
 			
-			while(column < levelOne.maxScreenColumnTiles && row < levelOne.maxScreenRowTiles) {
+			while(column < gamePanel.maxScreenColumnTiles && row < gamePanel.maxScreenRowTiles) {
 				
 				String line = br.readLine();
 				
-				while(column < levelOne.maxScreenColumnTiles) {
+				while(column < gamePanel.maxScreenColumnTiles) {
 					
 					String numbers[] = line.split(" ");
 					
@@ -75,7 +107,7 @@ public class TileManager {
 					column++;
 				}
 				
-				if(column == levelOne.maxScreenColumnTiles) {
+				if(column == gamePanel.maxScreenColumnTiles) {
 					column = 0;
 					row++;
 				}
@@ -100,18 +132,26 @@ public class TileManager {
 		int y = 0;
 		
 		// Loops through the entire screen and places a tile.
-		while(column < levelOne.maxScreenColumnTiles && row < levelOne.maxScreenRowTiles) {
+		while(column < gamePanel.maxScreenColumnTiles && row < gamePanel.maxScreenRowTiles) {
 			int tileNumber = mapTileNumber[column][row]; // Gets the number in the row/column of the map
 			
-			g2.drawImage(tile[tileNumber].image, x, y, levelOne.tileSize, levelOne.tileSize, null);
+			g2.drawImage(tile[tileNumber].image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
 			column++;
-			x += levelOne.tileSize;
+			x += gamePanel.tileSize;
 			
-			if(column == levelOne.maxScreenColumnTiles) {
+			// Check if the current tile is the winning tile (value 5)
+	        if (tileNumber == 5) {
+	            // Store the coordinates of the winning tile
+	            winTileX = x;
+	            winTileY = y;
+	            // Now you have the position of the winning tile (5)
+	        }
+			
+			if(column == gamePanel.maxScreenColumnTiles) {
 				column = 0;
 				x = 0;
 				row++;
-				y += levelOne.tileSize;
+				y += gamePanel.tileSize;
 			}
 			
 		}

@@ -46,7 +46,6 @@ public class EnemyClass {
         }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            // ... rest of your method ...
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }

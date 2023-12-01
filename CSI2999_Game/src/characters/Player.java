@@ -3,17 +3,19 @@ package characters;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import csi2999.LevelOne;
-import csi2999.LevelTwo;
+import csi2999.GamePanel;
 import csi2999.UserInput;
+import tiles.TileManager;
 
 public class Player extends DefaultCharacter {
 	// References to the first level and user input
-	LevelOne levelOne;
+	GamePanel gamePanel;
 	UserInput userInput;
 	
-	public Player (LevelOne levelOne, UserInput userInput) {
-		this.levelOne = levelOne;
+	public int currentLevel = 0;
+	
+	public Player (GamePanel gamePanel, UserInput userInput) {
+		this.gamePanel = gamePanel;
 		this.userInput = userInput;
 		
 		SetDefaultValues(); //Sets the defaults
@@ -27,7 +29,12 @@ public class Player extends DefaultCharacter {
 		tempPosX = posX;
 		tempPosY = posY;
 		
-		characterSpeed = 4;
+		characterSpeed = 2;
+	}
+	
+	public void resetPlayer() {
+	    SetDefaultValues();
+	    characterSpeed = 2;
 	}
 	
 	public void update() {
@@ -66,6 +73,6 @@ public class Player extends DefaultCharacter {
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.red);
 		
-		g2.fillRect(posX, posY, levelOne.defaultTileSize, levelOne.defaultTileSize); // Test player character. defaultTileSize because that's the size of ALL tiles in the game.
+		g2.fillRect(posX, posY, gamePanel.defaultTileSize, gamePanel.defaultTileSize); // Test player character. defaultTileSize because that's the size of ALL tiles in the game.
 	}
 }
