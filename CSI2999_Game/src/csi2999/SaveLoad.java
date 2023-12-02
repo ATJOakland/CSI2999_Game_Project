@@ -1,6 +1,6 @@
 package csi2999;
-// line 55 in levelone.java
-/* SaveLoad saveLoad = new SaveLoad(this); /////////////
+// line 58 in gamepanel.java
+/* public SaveLoad saveLoad = new SaveLoad(this); /////////////
 */
 
 //line 12 in user-input
@@ -9,20 +9,20 @@ package csi2999;
 //line 41 in user-input
 /* if (keyCode == KeyEvent.VK_TAB) {
 			isPressingTab = true;
+			JOptionPane.showMessageDialog(null, "Game has been saved");
 		}
 		//line 68 set to false
  */
 //line 56 in player
 /* else if(userInput.isPressingTab == true) {
-			levelOne.saveLoad.save();
-			JOptionPane.showMessageDialog(null, "Game has been saved");
+			gamePanel.saveLoad.save();
 		}
 */
 //line 75 in main menu
 /*
  //////
-                LevelOne levelOne;
-                levelOne.saveLoad.load();
+                gp.saveLoad.load();
+                gp.start(player.currentLevel); /////////////
 */
 
 import java.awt.event.KeyEvent;
@@ -37,11 +37,13 @@ import javax.swing.JOptionPane;
 
 
 public class SaveLoad {
-	LevelOne levelOne;
+	GamePanel gp;
+	//BattleScreen battle;
 	
-	public SaveLoad(LevelOne levelOne) {
-		this.levelOne = levelOne;
+	public SaveLoad(GamePanel gp) {
+		this.gp = gp;
 	}
+	
 	public void save() {
 		
 		try {
@@ -49,8 +51,8 @@ public class SaveLoad {
 		
 		PlayerStats ps = new PlayerStats();
 		
-		ps.health = levelOne.player.currentHealth; //bug 1
-		ps.level = levelOne.player.level; //bug 2
+		//ps.health = gp.player.currentHealth; //bug 1
+		ps.level = gp.player.currentLevel; //bug 2
 		
 		//write the playerStats object
 		oos.writeObject(ps);
@@ -60,19 +62,24 @@ public class SaveLoad {
 			System.out.println("Save Exception!");
 		}
 	}
+	
 	public void load() {
 		try {
+			
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("save.dat")));
 			
 			//read the playerStats object
 			PlayerStats ps = (PlayerStats)ois.readObject();
 			
-			levelOne.player.getCurrentHealth = ps.health; //bug 3
-			levelOne.player.level = ps.level ; //bug 4
+			//gp.player.currentHealth = ps.health; //bug 3
+			gp.player.currentLevel = ps.level ; //bug 4
+			
+			
 		}
 		catch(Exception e) {
 			System.out.println("Load Exception!");
 		}
 		
 	}
+
 }
