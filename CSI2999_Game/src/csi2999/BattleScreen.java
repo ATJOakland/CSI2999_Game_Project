@@ -16,7 +16,7 @@ public class BattleScreen extends JFrame {
 	private JButton thunderButton;
 	private JButton itemButton;
 	private JButton escapeButton;
-	private backGroundCombat battle, Orc, Pirate, Goblin;
+	private backGroundCombat battle;
 	private JPanel buttonPanel;
 	private JPanel invtButtonPanel;
 	private ImageIcon playerSprite;
@@ -30,11 +30,13 @@ public class BattleScreen extends JFrame {
     private String emyRoll, emyDmg; 
 	private boolean playerTurn = false;
 	private boolean cpuTurn = false;
-	private int dmg = 0;
+	private boolean playerDied;
 
 	public BattleScreen(int level) {
 		setTitle("Get ready to fight");
 		setSize(800, 650);
+		
+		this.playerDied = false;
 
 		battle = new backGroundCombat(level);
 
@@ -262,14 +264,22 @@ public class BattleScreen extends JFrame {
 	}
 
 	public boolean battleOver(boolean escape) {
-		if (battle.deadOrAlive(battle.getEnemyHealth()) == false) {
+		if (battle.deadOrAlive(battle.getEnemyHealth()) == false || battle.deadOrAlive(battle.getPlyHlth()) == false) {
 			//setVisible(false);
 			//battle.battleEnd();
 			//JOptionPane.showMessageDialog(null, "Enemy Defeated!");
+			int x = 2;
+			playerTurn = false;
+			cpuTurn = true;
 			setVisible(false);
 	        battle.battleEnd();
 	        updateEnemySprite(); // Update the enemy sprite for the new monster
-	        JOptionPane.showMessageDialog(null, "Enemy Defeated!");
+	        if(battle.getEnemyHealth() <= 0){
+	        JOptionPane.showMessageDialog(null, "Enemy Defeated!");}
+	        else if (battle.getPlyHlth() <= 0) {
+	        JOptionPane.showMessageDialog(null, "You have died");
+	        this.playerDied = true;
+	        }
 			return true;
 		}else if(escape == true) {
 			setVisible(false);
@@ -284,7 +294,7 @@ public class BattleScreen extends JFrame {
 	public void playerTurn(int dmg) {
 		// int dmg = battle.getPlayerAttack();
 		if (playerTurn == false) {
-			JOptionPane.showMessageDialog(null, "You Damange the enemy: " + dmg); 
+			JOptionPane.showMessageDialog(null, "You Damanged the enemy: " + dmg); 
 			battle.setEnemyHealth(dmg);
 			playerTurn = true;
 			cpuTurn = false;
@@ -306,8 +316,9 @@ public class BattleScreen extends JFrame {
                             Thread.currentThread().interrupt();
                           }
 			battle.setPlyhealth(emyDmg);
-			JOptionPane.showMessageDialog(null, "Enemy Damges you" + emyDmg); 
+			JOptionPane.showMessageDialog(null, "Enemy Damged you for: " + emyDmg); 
 			enemyDamageLabel.setText(this.emyDmg + Integer.toString(emyDmg));
+			
 			battleOver(false);
 			playerTurn = false;
 			cpuTurn = true;
@@ -321,6 +332,11 @@ public class BattleScreen extends JFrame {
 	    enemy.setIcon(enemySprite);
 	    enemy.setText(monsterName);
 	}
+
+	public boolean isPlayerDied() {
+		return playerDied;
+	}
+	
 	
 }
 

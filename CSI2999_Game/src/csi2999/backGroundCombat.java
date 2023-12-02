@@ -43,6 +43,7 @@ public class backGroundCombat {
 		this.emyDiceRoll = 0;
 		this.maxEmyHealth = enemy.getMaxHealth();
 		this.specDiceRoll = 0;
+		initializeLevel(level);
 	}
 	public int getMaxEmyHealth() {
 		return maxEmyHealth;
@@ -81,7 +82,9 @@ public class backGroundCombat {
 	}
 
 	public void setEnemyHealth(int damage) {
-		this.enemyHealth = enemyHealth - this.damage;
+		if(enemyHealth - damage < 0) {
+			this.enemyHealth = 0;
+		}else {this.enemyHealth = enemyHealth - damage;}
 
 	}
 
@@ -100,7 +103,10 @@ public class backGroundCombat {
 	}
 
 	public void setPlyhealth(int damage) {
-		this.playerHealth = playerHealth - damage;
+		if(playerHealth - damage < 0) {
+			this.playerHealth = 0;
+		}else {this.playerHealth = playerHealth - damage;}
+		
 		player.saveToCsvFile(this.playerHealth);
 	}
 
@@ -206,6 +212,31 @@ public class backGroundCombat {
     
     }
     
+    public void initializeLevel(int level) {
+        this.monsterName = monster.generateMonster();
+        enemy = new EnemyClass(level, this.monsterName);
+        player = new characterClass(level); //
+        updateStats();
+    }
+    private void updateStats() {
+        this.playerHealth = player.getCurrentHealth();
+        this.playerAttack = player.getPlayerAttack();
+        this.playerDefense = player.getPlayerDefense();
+        this.enemyHealth = enemy.getEnemyHealth();
+        this.enemyAttack = enemy.getEnemyAttack();
+        this.enemyDefense = enemy.getEnemyDefense();
+        this.iceDmg = player.getIceDmg();
+        this.fireDmg = player.getPlayerFireDmg();
+        this.thunderDmg = player.getthunderDmg();
+        this.maxEmyHealth = enemy.getMaxHealth();
+
+        // Reset damage and dice rolls
+        this.damage = 0;
+        this.enemyDamage = 0;
+        this.diceRoll = 0;
+        this.emyDiceRoll = 0;
+        this.specDiceRoll = 0;
+    }
     /*private int setWeakNess() {
     	int dmg = 10;
     	int noDmg = 0;

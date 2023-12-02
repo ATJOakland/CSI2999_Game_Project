@@ -167,6 +167,16 @@ public class GamePanel extends JPanel implements Runnable{
 	        		System.out.println("You beat the game!");
 	                stopGame(); // Call method to stop the game thread
 	        	}
+	        	if(battle.isPlayerDied() == true) {
+	        		 stopGame();
+	        		 SwingUtilities.invokeLater(() -> {
+	        		        new MainMenu();
+	        		 });
+	        		 battleCnt = maxBattle;
+	        		 setVisible(false);
+	        		 break;
+	        		
+	        	}
 	        }
 		}
 	}

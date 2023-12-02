@@ -54,7 +54,7 @@ public class MainMenu extends JFrame {
                 //set resetHealth back to 200;
                 characterClass resetHealth = new characterClass(0);
                 resetHealth.setCurrentHealth(200);
-                //setVisible(false);
+                setVisible(false);
                 // Create instance of the Game Panel Class and start it
                 GamePanel gamePanel = new GamePanel();
                 // Create the JFrame for Game Panel
