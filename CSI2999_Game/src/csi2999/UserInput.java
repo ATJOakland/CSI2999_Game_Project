@@ -3,12 +3,15 @@ package csi2999;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JOptionPane;
+
 public class UserInput implements KeyListener{
 
 	public boolean isPressingUp;
 	public boolean isPressingDown;
 	public boolean isPressingLeft;
 	public boolean isPressingRight;
+	public boolean isPressingShift; //////
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -37,6 +40,10 @@ public class UserInput implements KeyListener{
 		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
 			isPressingRight = true;
 		}
+		if (keyCode == KeyEvent.VK_E || keyCode == KeyEvent.VK_SHIFT) {
+			isPressingShift = true;
+			JOptionPane.showMessageDialog(null, "Game has been saved");
+		}
 	}
 	
 	// If key is not pressed/released
@@ -60,6 +67,9 @@ public class UserInput implements KeyListener{
 		
 		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
 			isPressingRight = false;
+		}
+		if (keyCode == KeyEvent.VK_E || keyCode == KeyEvent.VK_SHIFT) {
+			isPressingShift = false;
 		}
 	}
 }

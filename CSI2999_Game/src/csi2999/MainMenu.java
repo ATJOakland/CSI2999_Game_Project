@@ -17,7 +17,9 @@ import javax.swing.SwingUtilities;
 import characters.Player;
 
 public class MainMenu extends JFrame {
-	Player player;
+	UserInput u;
+	//GamePanel gamePanel = new GamePanel();
+	//public Player player = new Player(gamePanel,u);
 	
     public MainMenu(){
         super("Start Screen");
@@ -54,9 +56,9 @@ public class MainMenu extends JFrame {
                 //set resetHealth back to 200;
                 characterClass resetHealth = new characterClass(0);
                 resetHealth.setCurrentHealth(200);
-                setVisible(false);
+                //setVisible(false);
                 // Create instance of the Game Panel Class and start it
-                GamePanel gamePanel = new GamePanel();
+               GamePanel gamePanel = new GamePanel();
                 // Create the JFrame for Game Panel
                 JFrame gamePanelFrame = new JFrame("Game");
                 gamePanelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close the frame only
@@ -77,7 +79,27 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "Game is loading....");
-                
+                /////////////////////////////////////////////////////////////////////
+             // Create instance of the Game Panel Class and start it
+                GamePanel gamePanel = new GamePanel();
+                // Create the JFrame for Game Panel
+                JFrame gamePanelFrame = new JFrame("Game");
+                gamePanelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close the frame only
+                //Add the Game panel to JFrame
+                gamePanelFrame.add(gamePanel);
+                //Set size and visibility of the frame
+                gamePanelFrame.setSize(gamePanel.getPreferredSize());
+                gamePanelFrame.pack(); // This will set the frame size based on LevelOne's preferred size
+                gamePanelFrame.setLocationRelativeTo(null);
+                gamePanelFrame.setVisible(true);
+                // Starts the level (first level, first)
+                //gamePanel.start(0); //currentLevel is in the Player.java by default
+                //new player 
+                Player player = new Player(gamePanel,u);
+                ////////////////////////////////////////
+                gamePanel.saveLoad.load();
+                gamePanel.start(gamePanel.player.currentLevel);
+                //currentLevel is in the Player.java by default
             }
         });
         

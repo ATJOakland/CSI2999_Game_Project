@@ -13,11 +13,13 @@ package csi2999;
 
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 
 import characters.Player;
 import tiles.TileManager;
@@ -33,7 +35,8 @@ public class GamePanel extends JPanel implements Runnable{
 	private final int maxBattle = 1000;
 	private boolean isBattleActive = false;
 	private RandomTimer battleTimer = new RandomTimer(5000, 9000);
-	private BattleScreen battle = new BattleScreen(1);
+	////////////public
+	public BattleScreen battle = new BattleScreen(1);
 	
 	//Putting tiles on screen
 	public final int maxScreenColumnTiles = 16;
@@ -53,6 +56,8 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// Create the tile manager
 	TileManager tileManager;
+	///////////////////////////////////////////////////////////////
+	public SaveLoad saveLoad = new SaveLoad(this);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight)); //Sets screen size
@@ -197,6 +202,7 @@ public class GamePanel extends JPanel implements Runnable{
 	    
 	    JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 	    topFrame.dispose();
+
 	}
 	
 	
@@ -236,4 +242,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		g2.dispose(); // Get rid of unused graphics
 	}
+	
+
+	
 }
