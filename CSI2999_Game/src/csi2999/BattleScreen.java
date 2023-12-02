@@ -34,7 +34,7 @@ public class BattleScreen extends JFrame {
 
 	public BattleScreen(int level) {
 		setTitle("Get ready to fight");
-		setSize(800, 600);
+		setSize(800, 650);
 
 		battle = new backGroundCombat(level);
 
@@ -76,7 +76,7 @@ public class BattleScreen extends JFrame {
 		player = new JLabel("Player");// once we have a sprite rename this playerSprite
 		player.setIcon(playerSprite);
 		player.setForeground(Color.red);
-		player.setPreferredSize(new Dimension(300, 200));
+		player.setPreferredSize(new Dimension(300, 210));
                 
         monsterName = battle.getMonsterName();
         
@@ -85,7 +85,7 @@ public class BattleScreen extends JFrame {
 		enemy = new JLabel(monsterName);// once we have a sprite rename this enemySprite
         enemy.setIcon(enemySprite);
 		enemy.setForeground(Color.red);
-		enemy.setPreferredSize(new Dimension(300, 200));
+		enemy.setPreferredSize(new Dimension(300, 220));
 
 		damagePanel = new JPanel();
 		damagePanel.setLayout(new BoxLayout(damagePanel, BoxLayout.Y_AXIS));
@@ -110,7 +110,7 @@ public class BattleScreen extends JFrame {
 				// update Label
 				
 				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
-				enemy.setText("Enemy Health" + battle.getEnemyHealth());
+				enemy.setText("Enemy:" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
 				playerRollLabel.setText(plyRoll + Integer.toString(battle.getDiceRoll()));
 				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
 				
@@ -122,7 +122,10 @@ public class BattleScreen extends JFrame {
 		defendButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent a) {
-				
+				battle.setDefend();
+				playerTurn = true;
+				cpuTurn = false;
+				enemyTurn(); 
 			}
 		});
 		iceButton = new JButton("ICE");
@@ -130,9 +133,18 @@ public class BattleScreen extends JFrame {
 		iceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent a) {
-				int dmg = battle.getPlayerAttack();
+				
+				int dmg = battle.applySpecialDamage("Ice");
 				playerTurn(dmg);
 				enemyTurn();
+				// update Label
+				JOptionPane.showMessageDialog(null, "Ice Damge" + dmg);
+				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
+				enemy.setText("Enemy:" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+				playerRollLabel.setText(plyRoll + Integer.toString(battle.getSpecDiceRoll()));
+				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
+				
+				
 			}
 		});
 		fireButton = new JButton("Fire");
@@ -140,7 +152,18 @@ public class BattleScreen extends JFrame {
 		fireButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent a) {
-
+				
+				int dmg = battle.applySpecialDamage("Fire");
+				playerTurn(dmg);
+				enemyTurn();
+				// update Label
+				JOptionPane.showMessageDialog(null, "Fire Damge" + dmg);
+				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
+				enemy.setText("Enemy:" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+				playerRollLabel.setText(plyRoll + Integer.toString(battle.getSpecDiceRoll()));
+				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
+				
+				
 			}
 		});
 		thunderButton = new JButton("Thunder");
@@ -148,7 +171,18 @@ public class BattleScreen extends JFrame {
 		thunderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent a) {
-
+				
+				int dmg = battle.applySpecialDamage("Thunder");
+				playerTurn(dmg);
+				enemyTurn();
+				// update Label
+				JOptionPane.showMessageDialog(null, "Thunder Damge" + dmg);
+				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
+				enemy.setText("Enemy:" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+				playerRollLabel.setText(plyRoll + Integer.toString(battle.getSpecDiceRoll()));
+				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
+				
+				
 			}
 		});
 		itemButton = new JButton("Items");
@@ -171,9 +205,19 @@ public class BattleScreen extends JFrame {
 
                 // Handle the selected option
                 if (selectedOption >= 0) {
-                    String selected = options[selectedOption];
-                    // Do something with the selected option
-                    System.out.println("Selected option: " + selected);
+                    if(selectedOption == 0) { // Potion
+                        battle.setHeal(50);
+                        JOptionPane.showMessageDialog(null,"Amount healed: " + battle.setHeal(50));
+                        player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
+                    } else if(selectedOption == 1) { // Hi-Potion
+                        // Handle Hi-Potion
+                    	JOptionPane.showMessageDialog(null, battle.setHeal(100));
+                    	player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());// Example healing amount for Hi-Potion
+                    } else if(selectedOption == 2) { // Elixer
+                        // Handle Elixer
+                    	JOptionPane.showMessageDialog(null, battle.setHeal(500));
+                    	player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());// Example healing amount for Elixer
+                    }
                 }
             }
         });
@@ -196,6 +240,7 @@ public class BattleScreen extends JFrame {
 		buttonPanel.add(defendButton);
 		buttonPanel.add(iceButton);
 		buttonPanel.add(fireButton);
+		buttonPanel.add(thunderButton);
 		buttonPanel.add(itemButton);
 		buttonPanel.add(escapeButton);
 
@@ -218,13 +263,17 @@ public class BattleScreen extends JFrame {
 
 	public boolean battleOver(boolean escape) {
 		if (battle.deadOrAlive(battle.getEnemyHealth()) == false) {
+			//setVisible(false);
+			//battle.battleEnd();
+			//JOptionPane.showMessageDialog(null, "Enemy Defeated!");
 			setVisible(false);
-			battle.resetCombat();
-			JOptionPane.showMessageDialog(null, "Enemy Defeated!");
+	        battle.battleEnd();
+	        updateEnemySprite(); // Update the enemy sprite for the new monster
+	        JOptionPane.showMessageDialog(null, "Enemy Defeated!");
 			return true;
 		}else if(escape == true) {
 			setVisible(false);
-			battle.resetCombat();
+			battle.battleEnd();
 			JOptionPane.showMessageDialog(null, "Escaped");
 			return true;
 		}
@@ -235,12 +284,13 @@ public class BattleScreen extends JFrame {
 	public void playerTurn(int dmg) {
 		// int dmg = battle.getPlayerAttack();
 		if (playerTurn == false) {
+			JOptionPane.showMessageDialog(null, "You Damange the enemy: " + dmg); 
 			battle.setEnemyHealth(dmg);
 			playerTurn = true;
 			cpuTurn = false;
 			battleOver(false);
 		} else {
-			System.out.println("Please wait for cpu turn!");
+			JOptionPane.showMessageDialog(null, "Please wait for cpu turn!");
 		}
 	}
 
@@ -256,13 +306,20 @@ public class BattleScreen extends JFrame {
                             Thread.currentThread().interrupt();
                           }
 			battle.setPlyhealth(emyDmg);
+			JOptionPane.showMessageDialog(null, "Enemy Damges you" + emyDmg); 
 			enemyDamageLabel.setText(this.emyDmg + Integer.toString(emyDmg));
 			battleOver(false);
 			playerTurn = false;
 			cpuTurn = true;
 		} else {
-			System.out.println("Please wait for cpu turn!");
+			JOptionPane.showMessageDialog(null, "Please wait for cpu turn!");
 		}
+	}
+	public void updateEnemySprite() {
+	    monsterName = battle.getMonsterName();
+	    enemySprite = new ImageIcon(BattleScreen.class.getResource(monsterName + ".png"));
+	    enemy.setIcon(enemySprite);
+	    enemy.setText(monsterName);
 	}
 	
 }

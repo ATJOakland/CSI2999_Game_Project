@@ -34,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private boolean isBattleActive = false;
 	private RandomTimer battleTimer = new RandomTimer(5000, 9000);
 	private BattleScreen battle = new BattleScreen(1);
+	
 	//Putting tiles on screen
 	public final int maxScreenColumnTiles = 16;
 	public final int maxScreenRowTiles = 12;
@@ -68,6 +69,25 @@ public class GamePanel extends JPanel implements Runnable{
         
         // Initialize the tile manager
         tileManager = new TileManager(this, levelNumber);
+        
+        switch(levelNumber){
+        	case 1:
+        		battle = new BattleScreen(1);
+        		break;
+        	case 2:
+        		battle.dispose();
+        		battle = new BattleScreen(2);
+        		break;
+        	case 3:
+        		battle.dispose();
+    			battle = new BattleScreen(3);
+    			break;
+        	case 4:
+        		battle.dispose();
+    			battle = new BattleScreen(3);
+    			break;
+
+        }
 
         // Check if a game thread is already running
         if (gameThread == null || !gameThread.isAlive()) {
@@ -119,6 +139,7 @@ public class GamePanel extends JPanel implements Runnable{
 			if(battleCnt <= maxBattle) {
 				if (battleTimer.isTimeUp() && !isBattleActive) {
 					System.out.println("Turning on battle System");
+					
 	                isBattleActive = true;
 	                battleTimer.pause();
 	                battle.setVisible(true);

@@ -8,19 +8,20 @@ public class backGroundCombat {
 	// this is be called in from char sheet
 	private int playerHealth;
 	private int playerAttack;
-	private int playerFireDmg;
+	private int specDiceRoll;
 	private int playerDefense;
 	private int diceRoll, emyDiceRoll;
 	private int damage;
 	private int enemyDamage;
 	private int iceDmg;
 	private int fireDmg;
-	private int wtrDmg;
-	
+	private int thunderDmg;
+	private int maxEmyHealth;
 	private randomEncouterClass monster = new randomEncouterClass();
 	private characterClass player;
 	private EnemyClass enemy;
 	String monsterName;
+
 	// creating my dice object
 	private randomNumberClass twentySideDice = new randomNumberClass();
 	public backGroundCombat(int level) {
@@ -32,15 +33,19 @@ public class backGroundCombat {
 		this.playerHealth = player.getCurrentHealth();
 		this.playerAttack = player.getPlayerAttack();
 		this.playerDefense = player.getPlayerDefense();
-		this.enemyHealth = 50;//enemy.getEnemyHealth();
-		this.enemyAttack = 2;//enemy.getEnemyAttack();
-		this.enemyDefense = 2;//enemy.getEnemyDefense();
+		this.enemyHealth = enemy.getEnemyHealth();
+		this.enemyAttack = enemy.getEnemyAttack();
+		this.enemyDefense = enemy.getEnemyDefense();
 		this.iceDmg = player.getIceDmg();
 		this.fireDmg = player.getPlayerFireDmg();
-		this.wtrDmg = player.getWtrDmg();
+		this.thunderDmg = player.getthunderDmg();
 		this.diceRoll= 0;
 		this.emyDiceRoll = 0;
-
+		this.maxEmyHealth = enemy.getMaxHealth();
+		this.specDiceRoll = 0;
+	}
+	public int getMaxEmyHealth() {
+		return maxEmyHealth;
 	}
 	public int getEmyDiceRoll() {
 		return this.emyDiceRoll;
@@ -55,6 +60,12 @@ public class backGroundCombat {
 		return this.diceRoll;
 	}
 	
+	public int getSpecDiceRoll() {
+		return specDiceRoll;
+	}
+	public void setSpecDiceRoll() {
+		this.specDiceRoll = twentySideDice.getDiceRoll();;
+	}
 	public int maxHealthPly() {
 		return player.getPlayerHealth();
 	}
@@ -97,24 +108,20 @@ public class backGroundCombat {
 		return playerHealth;
 	}
 
-	public int setIceDmg(int dmg, int bonus) {
-		int iceDmg;
-		iceDmg = this.iceDmg + dmg + bonus;
-		return iceDmg;
-	}
+	public int setHeal(int amount) {
+		int healthBeforeHealing = this.playerHealth;
+	    this.playerHealth += amount;
 
-	public int setFireDmg(int dmg, int bonus) {
-		int fireDmg;
-		fireDmg = this.fireDmg + dmg + bonus;
-		return fireDmg;
-	}
+	    if (this.playerHealth > this.maxHealthPly()) {
+	        this.playerHealth = this.maxHealthPly();
+	    }
 
-	public int setWtrDmg(int dmg, int bonus) {
-		int wtrDmg;
-		wtrDmg = this.wtrDmg + dmg + bonus;
-		return wtrDmg;
-	}
+	    player.saveToCsvFile(this.playerHealth);
 
+	    // Calculate the actual amount of health restored
+	    int actualHealedAmount = this.playerHealth - healthBeforeHealing;
+	    return actualHealedAmount;
+	}
 	public int setDefend() {
 		int defenseDamage;
 		int defenseboost = 10;
@@ -128,6 +135,7 @@ public class backGroundCombat {
 
 	public boolean deadOrAlive(int health) {
 		if (health <= 0) {
+			
 			return false;
 		} else
 			return true;
@@ -136,22 +144,81 @@ public class backGroundCombat {
 	public String getMonsterName() {
 		return this.monsterName;
 	}
-	public void SetEnemyHealthBack() {
-		this.enemyHealth = 50;
+	public void generateMonster() {
+	    // Reset player stats
+	    this.playerHealth = player.getPlayerHealth();
+	    this.playerAttack = player.getPlayerAttack();
+	    this.playerDefense = player.getPlayerDefense();
+	    this.iceDmg = player.getIceDmg();
+	    this.fireDmg = player.getPlayerFireDmg();
+	    this.thunderDmg = player.getthunderDmg();
+
+	    // Reset enemy stats
+	    this.enemyHealth = enemy.getEnemyHealth();
+	    this.enemyAttack = enemy.getEnemyAttack();
+	    this.enemyDefense = enemy.getEnemyDefense();
+	    this.maxEmyHealth = enemy.getMaxHealth();
+
+	    // Reset damage and dice rolls
+	    this.damage = 0;
+	    this.enemyDamage = 0;
+	    this.diceRoll = 0;
+	    this.emyDiceRoll = 0;
+    }
+	public void battleEnd() {
+	    if (this.enemyHealth <= 0) {
+	        
+	        generateMonster(); // Generate a new monster for the next encounter
+	    }
 	}
-	public void resetCombat() {
-        this.monsterName = monster.generateMonster();
-        enemy = new EnemyClass(1, this.monsterName);
-        player = new characterClass(1);
-        this.playerHealth = player.getPlayerHealth();
-        this.playerAttack = player.getPlayerAttack();
-        this.playerDefense = player.getPlayerDefense();
-        this.enemyHealth = 50;
-        this.enemyAttack = 2;
-        this.enemyDefense = 2;
-        this.iceDmg = player.getIceDmg();
-        this.fireDmg = player.getPlayerFireDmg();
-        this.wtrDmg = player.getWtrDmg();
+	public int applySpecialDamage(String type) {
+        int specialDamage = 0;
+        int bonus = 0;//setWeakNess();
+        setSpecDiceRoll();
+        switch (type) {
+            case "Ice":
+                specialDamage = calculateIceDamage(bonus);
+                break;
+            case "Fire":
+                specialDamage = calculateFireDamage(bonus);
+                break;
+            case "Thunder":
+                specialDamage = calculateThunderDamage(bonus);
+                break;
+        }
+        this.enemyHealth -= specialDamage;
+        return specialDamage;
+    }
+	private int calculateIceDamage(int bonus) {
+		return  this.iceDmg + this.specDiceRoll - 8 + bonus;
+
     }
 
+    private int calculateFireDamage(int bonus) {
+    
+		return  this.fireDmg + this.specDiceRoll - 8 + bonus;
+    
+    }
+
+    private int calculateThunderDamage(int bonus) {
+   
+		return this.thunderDmg + this.specDiceRoll - 8 + bonus;
+    
+    }
+    
+    /*private int setWeakNess() {
+    	int dmg = 10;
+    	int noDmg = 0;
+    	switch(enemy.getWeakness()) {
+	    	case 0: 
+	    		return dmg;
+	    	case 1: 
+	    		return dmg;
+	    	case 2:
+	    		return dmg;
+	    	default:
+	    		return noDmg;*/
+	    		
+    	//}
+    //}
 }

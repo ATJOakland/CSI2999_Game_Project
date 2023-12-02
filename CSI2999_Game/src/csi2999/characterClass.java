@@ -5,6 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.FileWriter;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.FileWriter;
 import java.net.URL;
 
 
@@ -17,7 +24,7 @@ public class characterClass {
 	private int level;
 	private int currentHealth;
 	
-	private int wtrDmg;
+	private int thunderDmg;
 	private final String filePath;
 
 	public characterClass(int level) {
@@ -29,15 +36,15 @@ public class characterClass {
 		this.playerDefense = 3 + (level - 1) * 4; // Default value, can be modified later
 		this.iceDmg = 3 + (level - 1) * 3; // Default value, can be modified later
 		this.currentHealth = readCurrentHealthFromFile();
-		this.wtrDmg = 4 + (level - 1) * 3;
+		this.thunderDmg = 4 + (level - 1) * 3;
 	}
 
-	public int getWtrDmg() {
-		return wtrDmg;
+	public int getthunderDmg() {
+		return thunderDmg;
 	}
 
-	public void setWtrDmg(int wtrDmg) {
-		this.wtrDmg = wtrDmg;
+	public void setthunderDmg(int thunderDmg) {
+		this.thunderDmg = thunderDmg;
 	}
 
 	public int getPlayerHealth() {
@@ -111,7 +118,7 @@ public class characterClass {
 	
 
 	public int readCurrentHealthFromFile() {
-	    int readHealth = this.playerMaxHealth; // Default value
+	    int readHealth = this.currentHealth; // Default value
 
 	    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(this.filePath);
 	         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
