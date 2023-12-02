@@ -12,7 +12,8 @@ public class Player extends DefaultCharacter {
 	GamePanel gamePanel;
 	UserInput userInput;
 	
-	public int currentLevel = 0;
+	public int currentLevel = 0; //////
+	//public currentHealth = 200;
 	
 	public Player (GamePanel gamePanel, UserInput userInput) {
 		this.gamePanel = gamePanel;
@@ -59,6 +60,9 @@ public class Player extends DefaultCharacter {
 		else if(userInput.isPressingLeft == true) {
 			posX -= characterSpeed;
 			tempPosX = posX;
+		}
+		else if(userInput.isPressingShift == true) {
+			gamePanel.saveLoad.save();
 		}
 	}
 	
