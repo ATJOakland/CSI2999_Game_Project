@@ -7,8 +7,7 @@ public class ColCheck {
 	LevelOne panel;
 	LevelTwo panel2;
 	LevelThree panel3;
-	LevelFour panel4;
-	LevelFive panel5;
+	FinalLvl panel4;
 	
 	public CollisionCheck(LevelOne panel) {
 		this.panel = panel;
@@ -22,9 +21,7 @@ public class ColCheck {
 	public CollisionCheck(LevelFour panel) {
 		this.panel4 = panel;
 	}
-	public CollisionCheck(LevelFive panel) {
-		this.panel5 = panel;
-	}
+	
 	public void checkTileOne(DefaultCharacter character) {
 		int charLeftWorldX = character.posX + character.solidArea.x;
 		int charRightWorldX = character.posX + character.solidArea.x + character.solidArea.width;
@@ -178,7 +175,7 @@ public class ColCheck {
 		}
 	}
 
-	public void checkTileFour(DefaultCharacter character) {
+	public void checkTileFinal(DefaultCharacter character) {
 		int charLeftWorldX = character.posX + character.solidArea.x;
 		int charRightWorldX = character.posX + character.solidArea.x + character.solidArea.width;
 		int charTopWorldY = character.posY + character.solidArea.y;
@@ -227,56 +224,5 @@ public class ColCheck {
 			}
 			break;
 		}
-	}
-
-	public void checkTileFive(DefaultCharacter character) {
-		int charLeftWorldX = character.posX + character.solidArea.x;
-		int charRightWorldX = character.posX + character.solidArea.x + character.solidArea.width;
-		int charTopWorldY = character.posY + character.solidArea.y;
-		int charBottomWorldY = character.posY + character.solidArea.y + character.solidArea.height;
-		
-		int charLeftCol = charLeftWorldX/panel5.tileSize;
-		int charRightCol = charRightWorldX/panel5.tileSize;
-		int charTopRow = charTopWorldY/panel5.tileSize;
-		int charBotRow = charBottomWorldY/panel5.tileSize;
-		
-		int tileNum1, tileNum2;
-		
-		switch(character.direction) {
-		case "up":
-			charTopRow = (charTopWorldY - character.characterSpeed)/panel5.tileSize;
-			tileNum1 = panel5.tileM.mapTileNum[charLeftCol][charTopRow];
-			tileNum2 = panel5.tileM.mapTileNum[charRightCol][charTopRow];
-			if(panel5.tileM.tile[tileNum1].collision == true || panel5.tileM.tile[tileNum2].collision == true) {
-				character.colOn = true;
-			}
-			break;
-		case "down":
-			charBotRow = (charBottomWorldY + character.characterSpeed)/panel5.tileSize;
-			tileNum1 = panel5.tileM.mapTileNum[charLeftCol][charBotRow];
-			tileNum2 = panel5.tileM.mapTileNum[charRightCol][charBotRow];
-			if(panel5.tileM.tile[tileNum1].collision == true || panel5.tileM.tile[tileNum2].collision == true) {
-				character.colOn = true;
-			}
-			break;
-		case "left":
-			charLeftCol = (charLeftWorldX - character.characterSpeed)/panel5.tileSize;
-			tileNum1 = panel5.tileM.mapTileNum[charLeftCol][charTopRow];
-			tileNum2 = panel5.tileM.mapTileNum[charLeftCol][charBotRow];
-			if(panel5.tileM.tile[tileNum1].collision == true || panel5.tileM.tile[tileNum2].collision == true) {
-				character.colOn = true;
-			}else if(character.posX == 1) {
-				character.colOn = true;
-			}
-			break;
-		case "right":
-			charRightCol = (charRightWorldX + character.characterSpeed)/panel5.tileSize;
-			tileNum1 = panel5.tileM.mapTileNum[charRightCol][charTopRow];
-			tileNum2 = panel5.tileM.mapTileNum[charRightCol][charBotRow];
-			if(panel5.tileM.tile[tileNum1].collision == true || panel5.tileM.tile[tileNum2].collision == true) {
-				character.colOn = true;
-			}
-			break;
-		}		
-	}	
+	}			
 }
