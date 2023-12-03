@@ -174,7 +174,7 @@ public class GamePanel extends JPanel implements Runnable{
 	        if (isInWinningTileVicinity(tileManager.winTileX, tileManager.winTileY)) {
 	        	if (player.currentLevel < 3) {
 			        System.out.println("Level Done. Moving on.");
-			        //JOptionPane.showMessageDialog(null, "Level Done. Moving on.");
+			        JOptionPane.showMessageDialog(null, "You have to find the evil commander and stop him!!!");
 		            player.currentLevel += 1;
 		            player.resetPlayer();
 			        start(player.currentLevel); // Recalls the game but makes it the next level
