@@ -185,6 +185,11 @@ public class GamePanel extends JPanel implements Runnable{
 			        start(player.currentLevel); // Recalls the game but makes it the next level
 	        	}
 	        	else if (player.currentLevel >= 3) { // When the player finishes then do this
+	        		boolean bossBattle = true;
+	        		battle.dispose();
+	        		while (bossBattle = true) {
+	        			bossBattle = finalBattle();
+	        		}
 	        		System.out.println("You beat the game!");
 	                stopGame(); // Call method to stop the game thread
 	        	}
@@ -259,6 +264,17 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		g2.dispose(); // Get rid of unused graphics
 	}
+	public boolean finalBattle() {
+		BattleScreen bossBattle = new BattleScreen(4);
+		bossBattle.setBossS();
+		bossBattle.setVisible(true);
+		while (bossBattle.battleOver(false) == false) {
+			return true;
+		} 
+		battle.setVisible(false);
+		return false;
+		}
+		
+	}
 	
-	
-}
+

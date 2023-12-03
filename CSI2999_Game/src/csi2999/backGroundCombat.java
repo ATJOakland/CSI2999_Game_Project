@@ -84,7 +84,7 @@ public class backGroundCombat {
 	public void setEnemyHealth(int damage) {
 		if(enemyHealth - damage < 0) {
 			this.enemyHealth = 0;
-		}else {this.enemyHealth = enemyHealth - damage;}
+		 }else {this.enemyHealth = enemyHealth - damage;}
 
 	}
 
@@ -94,7 +94,13 @@ public class backGroundCombat {
 
 	public void setAtkEnemy() {
 		setEmyDiceRoll();
-		this.enemyDamage = this.emyDiceRoll + this.enemyAttack - this.playerDefense;
+		int dmg;
+		dmg = this.emyDiceRoll + this.enemyAttack - this.playerDefense;;
+		if(dmg < 0) {
+			this.enemyDamage = 0;
+			}else {
+				this.enemyDamage = this.emyDiceRoll + this.enemyAttack - this.playerDefense;
+		}
 	}
 
 	public int getEnenmyAtk() {
@@ -252,4 +258,11 @@ public class backGroundCombat {
 	    		
     	//}
     //}
+    public void setBossStats() {
+    	this.monsterName = "Undead Commander";
+    	this.enemyHealth = 375;
+    	this.enemyAttack = 9;
+    	this.enemyDefense = 7;
+    	//this.weakness =2;
+    }
 }

@@ -337,6 +337,10 @@ public class BattleScreen extends JFrame {
 		return playerDied;
 	}
 	
+	public void setBossS() {
+		battle.setBossStats();
+	}
+	
 	
 }
 
