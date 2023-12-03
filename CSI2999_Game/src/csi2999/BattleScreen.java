@@ -31,14 +31,17 @@ public class BattleScreen extends JFrame {
 	private boolean playerTurn = false;
 	private boolean cpuTurn = false;
 	private boolean playerDied;
+	private boolean boss;
+	
 
-	public BattleScreen(int level) {
+	public BattleScreen(int level, boolean boss) {
 		setTitle("Get ready to fight");
 		setSize(800, 650);
 		
 		this.playerDied = false;
-
-		battle = new backGroundCombat(level);
+		this.boss = boss;
+		battle = new backGroundCombat(level, boss);
+		
 
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -80,9 +83,13 @@ public class BattleScreen extends JFrame {
 		player.setForeground(Color.red);
 		player.setPreferredSize(new Dimension(300, 210));
                 
-        monsterName = battle.getMonsterName();
+        if(boss) {
+        	monsterName = "Undead Commander";
+        }else {
+        	monsterName = battle.getMonsterName();
+        }
         
-
+        System.out.println(battle.getMonsterName());
         enemySprite = new ImageIcon(BattleScreen.class.getResource(monsterName + ".png"));// file path for sprite need here
 		enemy = new JLabel(monsterName);// once we have a sprite rename this enemySprite
         enemy.setIcon(enemySprite);

@@ -24,26 +24,48 @@ public class backGroundCombat {
 
 	// creating my dice object
 	private randomNumberClass twentySideDice = new randomNumberClass();
-	public backGroundCombat(int level) {
+	public backGroundCombat(int level, boolean boss) {
 
-		// left empty since this is the outline for combat.
-		this.monsterName = monster.generateMonster();
-		enemy = new EnemyClass(level, this.monsterName);
-		player = new characterClass(level);
-		this.playerHealth = player.getCurrentHealth();
-		this.playerAttack = player.getPlayerAttack();
-		this.playerDefense = player.getPlayerDefense();
-		this.enemyHealth = enemy.getEnemyHealth();
-		this.enemyAttack = enemy.getEnemyAttack();
-		this.enemyDefense = enemy.getEnemyDefense();
-		this.iceDmg = player.getIceDmg();
-		this.fireDmg = player.getPlayerFireDmg();
-		this.thunderDmg = player.getthunderDmg();
-		this.diceRoll= 0;
-		this.emyDiceRoll = 0;
-		this.maxEmyHealth = enemy.getMaxHealth();
-		this.specDiceRoll = 0;
-		initializeLevel(level);
+		// Check if it's a boss battle
+        if (boss) {
+            // Set boss stats
+            this.monsterName = "Undead Commander";
+            this.enemyHealth = 375;
+            this.enemyAttack = 9;
+            this.enemyDefense = 7;
+            this.maxEmyHealth = 375;
+            // Create an EnemyClass instance for the boss
+            enemy = new EnemyClass(level, this.monsterName);
+        } else {
+            // Generate a regular monster
+            this.monsterName = monster.generateMonster();
+            // Create an EnemyClass instance for the regular monster
+            enemy = new EnemyClass(level, this.monsterName);
+            // Set stats for the regular monster
+            this.enemyHealth = enemy.getEnemyHealth();
+            this.enemyAttack = enemy.getEnemyAttack();
+            this.enemyDefense = enemy.getEnemyDefense();
+            this.maxEmyHealth = enemy.getMaxHealth();
+        }
+
+        // Initialize the player
+        player = new characterClass(level);
+        // Set player stats
+        this.playerHealth = player.getCurrentHealth();
+        this.playerAttack = player.getPlayerAttack();
+        this.playerDefense = player.getPlayerDefense();
+        this.iceDmg = player.getIceDmg();
+        this.fireDmg = player.getPlayerFireDmg();
+        this.thunderDmg = player.getthunderDmg();
+
+        // Initialize other class members
+        this.diceRoll = 0;
+        this.emyDiceRoll = 0;
+        this.specDiceRoll = 0;
+
+        // Perform any other initialization needed for the level
+        initializeLevel(level);
+
 	}
 	public int getMaxEmyHealth() {
 		return maxEmyHealth;
@@ -259,10 +281,18 @@ public class backGroundCombat {
     	//}
     //}
     public void setBossStats() {
+    	int health, attack, defense;
+    	health = 375;
+    	attack = 9;
+    	defense = 7;
     	this.monsterName = "Undead Commander";
-    	this.enemyHealth = 375;
-    	this.enemyAttack = 9;
-    	this.enemyDefense = 7;
+    	this.enemyHealth = health;
+    	this.enemyAttack = attack;
+    	this.enemyDefense = defense;
+    	this.maxEmyHealth = health;
+    	enemy.setEnemyAttack(attack);
+    	enemy.setEnemyHealth(health);
+    	enemy.setEnemyDefense(defense);
     	//this.weakness =2;
     }
 }

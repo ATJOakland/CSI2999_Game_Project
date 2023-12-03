@@ -36,8 +36,9 @@ public class GamePanel extends JPanel implements Runnable{
 	private boolean isBattleActive = false;
 	private RandomTimer battleTimer = new RandomTimer(5000, 9000);
 	////////////public
-	public BattleScreen battle = new BattleScreen(1);
-	
+	private final boolean flag = false;
+	public BattleScreen battle = new BattleScreen(1, flag);
+
 	//Putting tiles on screen
 	public final int maxScreenColumnTiles = 16;
 	public final int maxScreenRowTiles = 12;
@@ -74,36 +75,36 @@ public class GamePanel extends JPanel implements Runnable{
         
         // Initialize the tile manager
         tileManager = new TileManager(this, levelNumber);
-        
+ 
         switch(levelNumber){
         	case 0:
         		System.out.println(levelNumber);
         		battle.dispose();
-        		battle = new BattleScreen(1);
+        		battle = new BattleScreen(1, flag);
         	    JOptionPane.showMessageDialog(null, "You have to find the evil commander and stop him!!!");
         		break;
         	case 1:
         		System.out.println(levelNumber);
         		battle.dispose();
-        		battle = new BattleScreen(2);
+        		battle = new BattleScreen(2, flag);
         		JOptionPane.showMessageDialog(null, "You've reached his lair, just a little further!");
         		break;
         	case 2:
         		System.out.println(levelNumber);
         		battle.dispose();
-    			battle = new BattleScreen(3);
+    			battle = new BattleScreen(3, flag);
     			JOptionPane.showMessageDialog(null, "The enemy commander is strong, but you grow stronger by the minute!!");
     			break;
         	case 3:
         		System.out.println(levelNumber);
         		battle.dispose();
-    			battle = new BattleScreen(3);
+    			battle = new BattleScreen(3, flag);
     			JOptionPane.showMessageDialog(null, "You dare challenge me? Let's see if you can reach me first.");
     			break;
         	case 4:
         		System.out.println(levelNumber);
         		battle.dispose();
-    			battle = new BattleScreen(3);
+    			battle = new BattleScreen(3, flag);
     			JOptionPane.showMessageDialog(null, "What?! How could I lose?!? NOOOOO!!!!");
     			break;
 
@@ -187,9 +188,8 @@ public class GamePanel extends JPanel implements Runnable{
 	        	else if (player.currentLevel >= 3) { // When the player finishes then do this
 	        		boolean bossBattle = true;
 	        		battle.dispose();
-	        		while (bossBattle = true) {
-	        			bossBattle = finalBattle();
-	        		}
+	        		JOptionPane.showMessageDialog(null, "You have found the evil commander!!! \nThe world needs you to save it.\nYou have been healed\nBATTLE!!!");
+	        		finalBattle();
 	        		System.out.println("You beat the game!");
 	                stopGame(); // Call method to stop the game thread
 	        	}
@@ -265,13 +265,14 @@ public class GamePanel extends JPanel implements Runnable{
 		g2.dispose(); // Get rid of unused graphics
 	}
 	public boolean finalBattle() {
-		BattleScreen bossBattle = new BattleScreen(4);
+		BattleScreen bossBattle = new BattleScreen(4, true);
 		bossBattle.setBossS();
 		bossBattle.setVisible(true);
 		while (bossBattle.battleOver(false) == false) {
 			return true;
 		} 
 		battle.setVisible(false);
+		JOptionPane.showMessageDialog(null, "What?! How could I lose?!? NOOOOO!!!!\n you saved the world");
 		return false;
 		}
 		

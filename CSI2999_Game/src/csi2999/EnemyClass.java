@@ -40,6 +40,16 @@ public class EnemyClass {
 	}
 	
 	
+	
+	public void setEnemyHealth(int enemyHealth) {
+		this.enemyHealth = enemyHealth;
+	}
+	public void setEnemyDefense(int enemyDefense) {
+		this.enemyDefense = enemyDefense;
+	}
+	public void setEnemyAttack(int enemyAttack) {
+		this.enemyAttack = enemyAttack;
+	}
 	//public int getWeakness() {
 	//	return weakness;
 	//}
