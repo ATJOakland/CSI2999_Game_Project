@@ -78,28 +78,33 @@ public class GamePanel extends JPanel implements Runnable{
         switch(levelNumber){
         	case 0:
         		System.out.println(levelNumber);
-        		JOptionPane.showMessageDialog(null, "Level Done. Moving on.");
+        		battle.dispose();
         		battle = new BattleScreen(1);
+        	    JOptionPane.showMessageDialog(null, "You have to find the evil commander and stop him!!!");
         		break;
         	case 1:
         		System.out.println(levelNumber);
         		battle.dispose();
         		battle = new BattleScreen(2);
+        		JOptionPane.showMessageDialog(null, "You've reached his lair, just a little further!");
         		break;
         	case 2:
         		System.out.println(levelNumber);
         		battle.dispose();
     			battle = new BattleScreen(3);
+    			JOptionPane.showMessageDialog(null, "The enemy commander is strong, but you grow stronger by the minute!!");
     			break;
         	case 3:
         		System.out.println(levelNumber);
         		battle.dispose();
     			battle = new BattleScreen(3);
+    			JOptionPane.showMessageDialog(null, "You dare challenge me? Let's see if you can reach me first.");
     			break;
         	case 4:
         		System.out.println(levelNumber);
         		battle.dispose();
     			battle = new BattleScreen(3);
+    			JOptionPane.showMessageDialog(null, "What?! How could I lose?!? NOOOOO!!!!");
     			break;
 
         }
