@@ -6,9 +6,15 @@ public class MainClass {
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable(){
         	public void run(){
-        		new MainMenu();
+        		try {
+        			new MainMenu();
         		}
+        		catch (Exception e){
+        			e.printStackTrace(); 
+                    System.out.println("An error occurred: " + e.getMessage() + "Error");
+        		}
+        	}
         	});
-        System.out.println();
+        System.out.println("Game Started");
     }
 }

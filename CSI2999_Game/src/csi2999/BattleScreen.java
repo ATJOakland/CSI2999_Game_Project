@@ -125,7 +125,7 @@ public class BattleScreen extends JFrame {
         enemyPanel.add(enemyHealthLabel);
                 
         
-
+        
 		damagePanel = new JPanel();
 		damagePanel.setLayout(new BoxLayout(damagePanel, BoxLayout.Y_AXIS));
 		damagePanel.setBackground(Color.yellow);
@@ -173,7 +173,7 @@ public class BattleScreen extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent a) {
 				
-				int dmg = battle.applySpecialDamage("Ice");
+				int dmg = battle.applySpecialDamage();
 				playerTurn(dmg);
 				enemyTurn();
 				// update Label
@@ -192,7 +192,7 @@ public class BattleScreen extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent a) {
 				
-				int dmg = battle.applySpecialDamage("Fire");
+				int dmg = battle.applySpecialDamage();
 				playerTurn(dmg);
 				enemyTurn();
 				// update Label
@@ -211,7 +211,7 @@ public class BattleScreen extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent a) {
 				
-				int dmg = battle.applySpecialDamage("Thunder");
+				int dmg = battle.applySpecialDamage();
 				playerTurn(dmg);
 				enemyTurn();
 				// update Label

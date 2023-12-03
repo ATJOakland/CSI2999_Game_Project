@@ -5,6 +5,7 @@ public class backGroundCombat {
 	private int enemyHealth;
 	private int enemyAttack;
 	private int enemyDefense;
+	private int weakness;
 	// this is be called in from char sheet
 	private int playerHealth;
 	private int playerAttack;
@@ -34,6 +35,7 @@ public class backGroundCombat {
             this.enemyAttack = 9;
             this.enemyDefense = 7;
             this.maxEmyHealth = 375;
+            this.weakness = 2;
             // Create an EnemyClass instance for the boss
             enemy = new EnemyClass(level, this.monsterName);
         } else {
@@ -46,6 +48,7 @@ public class backGroundCombat {
             this.enemyAttack = enemy.getEnemyAttack();
             this.enemyDefense = enemy.getEnemyDefense();
             this.maxEmyHealth = enemy.getMaxHealth();
+            this.weakness = enemy.getWeakness();
         }
 
         // Initialize the player
@@ -102,7 +105,7 @@ public class backGroundCombat {
 		setPlayerAttack();
 		return damage;
 	}
-
+	// making sure enemy health does go negative 
 	public void setEnemyHealth(int damage) {
 		if(enemyHealth - damage < 0) {
 			this.enemyHealth = 0;
@@ -113,7 +116,7 @@ public class backGroundCombat {
 	public int getEnemyHealth() {
 		return enemyHealth;
 	}
-
+	// setting enemy attacks with guards
 	public void setAtkEnemy() {
 		setEmyDiceRoll();
 		int dmg;
@@ -124,12 +127,12 @@ public class backGroundCombat {
 				this.enemyDamage = this.emyDiceRoll + this.enemyAttack - this.playerDefense;
 		}
 	}
-
+	// getter for enemy attack
 	public int getEnenmyAtk() {
 		setAtkEnemy();
 		return enemyDamage;
 	}
-
+	//setting enemy health
 	public void setPlyhealth(int damage) {
 		if(playerHealth - damage < 0) {
 			this.playerHealth = 0;
@@ -137,11 +140,11 @@ public class backGroundCombat {
 		
 		player.saveToCsvFile(this.playerHealth);
 	}
-
+	// getting enemy health;
 	public int getPlyHlth() {
 		return playerHealth;
 	}
-
+	// handling for heal
 	public int setHeal(int amount) {
 		int healthBeforeHealing = this.playerHealth;
 	    this.playerHealth += amount;
@@ -149,13 +152,14 @@ public class backGroundCombat {
 	    if (this.playerHealth > this.maxHealthPly()) {
 	        this.playerHealth = this.maxHealthPly();
 	    }
-
+	    // saving to file to load.
 	    player.saveToCsvFile(this.playerHealth);
 
 	    // Calculate the actual amount of health restored
 	    int actualHealedAmount = this.playerHealth - healthBeforeHealing;
 	    return actualHealedAmount;
 	}
+	// defense method
 	public int setDefend() {
 		int defenseDamage;
 		int defenseboost = 10;
@@ -166,7 +170,7 @@ public class backGroundCombat {
 		setPlyhealth(defenseDamage);
 		return defenseDamage;
 	}
-
+	// checking for death
 	public boolean deadOrAlive(int health) {
 		if (health <= 0) {
 			
@@ -178,6 +182,7 @@ public class backGroundCombat {
 	public String getMonsterName() {
 		return this.monsterName;
 	}
+	
 	public void generateMonster() {
 	    // Reset player stats
 	    this.playerHealth = player.getPlayerHealth();
@@ -192,6 +197,7 @@ public class backGroundCombat {
 	    this.enemyAttack = enemy.getEnemyAttack();
 	    this.enemyDefense = enemy.getEnemyDefense();
 	    this.maxEmyHealth = enemy.getMaxHealth();
+	    this.weakness = enemy.getWeakness();
 
 	    // Reset damage and dice rolls
 	    this.damage = 0;
@@ -199,26 +205,31 @@ public class backGroundCombat {
 	    this.diceRoll = 0;
 	    this.emyDiceRoll = 0;
     }
+	// checking to see if player died
 	public void battleEnd() {
 	    if (this.enemyHealth <= 0) {
 	        
 	        generateMonster(); // Generate a new monster for the next encounter
 	    }
 	}
-	public int applySpecialDamage(String type) {
+	
+	// handling eelements;
+	public int applySpecialDamage() {
         int specialDamage = 0;
-        int bonus = setWeakNess();
+        int bonus = 10;
         setSpecDiceRoll();
-        switch (type) {
-            case "Ice":
+        switch (this.weakness) {
+            case 1:
                 specialDamage = calculateIceDamage(bonus);
                 break;
-            case "Fire":
+            case 2:
                 specialDamage = calculateFireDamage(bonus);
                 break;
-            case "Thunder":
+            case 3:
                 specialDamage = calculateThunderDamage(bonus);
                 break;
+            default:
+            	specialDamage = 0;
         }
         //this.enemyHealth -= specialDamage;
         return specialDamage;
@@ -240,7 +251,7 @@ public class backGroundCombat {
 		return this.thunderDmg + this.specDiceRoll - elemMinus + bonus;
     
     }
-    
+    // resarting enemy class
     public void initializeLevel(int level) {
         this.monsterName = monster.generateMonster();
         enemy = new EnemyClass(level, this.monsterName);
@@ -266,21 +277,7 @@ public class backGroundCombat {
         this.emyDiceRoll = 0;
         this.specDiceRoll = 0;
     }
-    private int setWeakNess() {
-    	int dmg = 10;
-    	int noDmg = 0;
-    	switch(enemy.getWeakness()) {
-	    	case 1: 
-	    		return dmg;
-	    	case 2: 
-	    		return dmg;
-	    	case 3:
-	    		return dmg;
-	    	default:
-	    		return noDmg;
-	    		
-    	}
-    }
+    // special case for the boss
     public void setBossStats() {
     	int health, attack, defense;
     	health = 375;
@@ -294,6 +291,6 @@ public class backGroundCombat {
     	enemy.setEnemyAttack(attack);
     	enemy.setEnemyHealth(health);
     	enemy.setEnemyDefense(defense);
-    	//this.weakness =2;
+    	this.weakness =2;
     }
 }

@@ -41,6 +41,9 @@ public class EnemyClass {
 	
 	
 	
+	public void setWeakness(int weakness) {
+		this.weakness = weakness;
+	}
 	public void setEnemyHealth(int enemyHealth) {
 		this.enemyHealth = enemyHealth;
 	}
