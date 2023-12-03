@@ -76,18 +76,28 @@ public class GamePanel extends JPanel implements Runnable{
         tileManager = new TileManager(this, levelNumber);
         
         switch(levelNumber){
-        	case 1:
+        	case 0:
+        		System.out.println(levelNumber);
+        		JOptionPane.showMessageDialog(null, "Level Done. Moving on.");
         		battle = new BattleScreen(1);
         		break;
-        	case 2:
+        	case 1:
+        		System.out.println(levelNumber);
         		battle.dispose();
         		battle = new BattleScreen(2);
         		break;
+        	case 2:
+        		System.out.println(levelNumber);
+        		battle.dispose();
+    			battle = new BattleScreen(3);
+    			break;
         	case 3:
+        		System.out.println(levelNumber);
         		battle.dispose();
     			battle = new BattleScreen(3);
     			break;
         	case 4:
+        		System.out.println(levelNumber);
         		battle.dispose();
     			battle = new BattleScreen(3);
     			break;
@@ -164,6 +174,7 @@ public class GamePanel extends JPanel implements Runnable{
 	        if (isInWinningTileVicinity(tileManager.winTileX, tileManager.winTileY)) {
 	        	if (player.currentLevel < 3) {
 			        System.out.println("Level Done. Moving on.");
+			        //JOptionPane.showMessageDialog(null, "Level Done. Moving on.");
 		            player.currentLevel += 1;
 		            player.resetPlayer();
 			        start(player.currentLevel); // Recalls the game but makes it the next level
@@ -176,10 +187,11 @@ public class GamePanel extends JPanel implements Runnable{
 	        		 stopGame();
 	        		 SwingUtilities.invokeLater(() -> {
 	        		        new MainMenu();
+	        		        battleCnt = maxBattle;
+	   	        		 	setVisible(false);
+	   	        		 	
 	        		 });
-	        		 battleCnt = maxBattle;
-	        		 setVisible(false);
-	        		 break;
+	        		break;
 	        		
 	        	}
 	        }
@@ -243,6 +255,5 @@ public class GamePanel extends JPanel implements Runnable{
 		g2.dispose(); // Get rid of unused graphics
 	}
 	
-
 	
 }
