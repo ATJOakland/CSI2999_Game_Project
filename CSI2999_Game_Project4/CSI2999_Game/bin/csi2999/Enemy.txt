@@ -1,4 +1,0 @@
-Orc,50,3,2
-Goblin,60,2,4
-Pirate,55,4,5
-Undead Commander 270,9,7
