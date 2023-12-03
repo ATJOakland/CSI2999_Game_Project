@@ -1,25 +1,13 @@
 package csi2999;
 
-import character.DefaultCharacter;
+import characters.DefaultCharacter;
 
 public class ColCheck {
 	
-	LevelOne panel;
-	LevelTwo panel2;
-	LevelThree panel3;
-	FinalLvl panel4;
+	GamePanel panel;
 	
-	public CollisionCheck(LevelOne panel) {
+	public ColCheck(GamePanel panel) {
 		this.panel = panel;
-	}
-	public ColCheck(LevelTwo panel) {
-		this.panel2 = panel;
-	}
-	public CollisionCheck(LevelThree panel) {
-		this.panel3 = panel;
-	}
-	public CollisionCheck(LevelFour panel) {
-		this.panel4 = panel;
 	}
 	
 	public void checkTileOne(DefaultCharacter character) {

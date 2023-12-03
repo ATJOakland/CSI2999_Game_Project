@@ -32,11 +32,13 @@ public class BattleScreen extends JFrame {
 	private boolean cpuTurn = false;
 	private boolean playerDied;
 	private boolean boss;
+	private JLabel playerHealthLabel; // JLabel for displaying player health
+    private JLabel enemyHealthLabel; 
 	
 
 	public BattleScreen(int level, boolean boss) {
 		setTitle("Get ready to fight");
-		setSize(800, 650);
+		setSize(800, 600);
 		
 		this.playerDied = false;
 		this.boss = boss;
@@ -78,23 +80,51 @@ public class BattleScreen extends JFrame {
 		}
 
 		// file path for sprite need here
-		player = new JLabel("Player");// once we have a sprite rename this playerSprite
-		player.setIcon(playerSprite);
-		player.setForeground(Color.red);
-		player.setPreferredSize(new Dimension(300, 210));
-                
-        if(boss) {
-        	monsterName = "Undead Commander";
-        }else {
-        	monsterName = battle.getMonsterName();
+		// Player JLabel
+        player = new JLabel("Player");
+        player.setIcon(playerSprite);
+        player.setForeground(Color.red);
+        player.setPreferredSize(new Dimension(250, 210));
+
+        // Player Health Label
+        playerHealthLabel = new JLabel("Player:" + battle.getPlyHlth() + "/" + battle.maxHealthPly());
+        playerHealthLabel.setForeground(Color.GREEN);
+        playerHealthLabel.setFont(new Font("Serif", Font.BOLD, 16));
+        playerHealthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Player Panel
+        JPanel playerPanel = new JPanel();
+        playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+        playerPanel.setBackground(Color.BLACK);
+        playerPanel.add(player);
+        playerPanel.add(playerHealthLabel);
+
+        // Enemy JLabel
+        if (boss) {
+            monsterName = "Undead Commander";
+        } else {
+            monsterName = battle.getMonsterName();
         }
-        
-        System.out.println(battle.getMonsterName());
-        enemySprite = new ImageIcon(BattleScreen.class.getResource(monsterName + ".png"));// file path for sprite need here
-		enemy = new JLabel(monsterName);// once we have a sprite rename this enemySprite
+        enemySprite = new ImageIcon(BattleScreen.class.getResource(monsterName + ".png"));
+        enemy = new JLabel(monsterName);
         enemy.setIcon(enemySprite);
-		enemy.setForeground(Color.red);
-		enemy.setPreferredSize(new Dimension(300, 220));
+        enemy.setForeground(Color.red);
+        enemy.setPreferredSize(new Dimension(250, 210));
+
+        // Enemy Health Label
+        enemyHealthLabel = new JLabel(battle.getMonsterName() + ":" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+        enemyHealthLabel.setForeground(Color.RED);
+        enemyHealthLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        enemyHealthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Enemy Panel
+        JPanel enemyPanel = new JPanel();
+        enemyPanel.setLayout(new BoxLayout(enemyPanel, BoxLayout.Y_AXIS));
+        enemyPanel.setBackground(Color.BLACK);
+        enemyPanel.add(enemy);
+        enemyPanel.add(enemyHealthLabel);
+                
+        
 
 		damagePanel = new JPanel();
 		damagePanel.setLayout(new BoxLayout(damagePanel, BoxLayout.Y_AXIS));
@@ -118,8 +148,8 @@ public class BattleScreen extends JFrame {
 				enemyTurn();
 				// update Label
 				
-				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
-				enemy.setText("Enemy:" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+				updatePlayerHealthDisplay();
+				updateEnemyHealthDisplay();
 				playerRollLabel.setText(plyRoll + Integer.toString(battle.getDiceRoll()));
 				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
 				
@@ -147,9 +177,9 @@ public class BattleScreen extends JFrame {
 				playerTurn(dmg);
 				enemyTurn();
 				// update Label
-				JOptionPane.showMessageDialog(null, "Ice Damge" + dmg);
-				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
-				enemy.setText("Enemy:" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+				//JOptionPane.showMessageDialog(null, "Ice Damage:" + dmg);
+				updatePlayerHealthDisplay();
+				updateEnemyHealthDisplay();
 				playerRollLabel.setText(plyRoll + Integer.toString(battle.getSpecDiceRoll()));
 				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
 				
@@ -166,9 +196,9 @@ public class BattleScreen extends JFrame {
 				playerTurn(dmg);
 				enemyTurn();
 				// update Label
-				JOptionPane.showMessageDialog(null, "Fire Damge" + dmg);
-				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
-				enemy.setText("Enemy:" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+				//JOptionPane.showMessageDialog(null, "Fire Damge: " + dmg);
+				updatePlayerHealthDisplay();
+				updateEnemyHealthDisplay();
 				playerRollLabel.setText(plyRoll + Integer.toString(battle.getSpecDiceRoll()));
 				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
 				
@@ -185,9 +215,9 @@ public class BattleScreen extends JFrame {
 				playerTurn(dmg);
 				enemyTurn();
 				// update Label
-				JOptionPane.showMessageDialog(null, "Thunder Damge" + dmg);
-				player.setText("Health " + battle.getPlyHlth() + "/" + battle.maxHealthPly());
-				enemy.setText("Enemy:" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+				//JOptionPane.showMessageDialog(null, "Thunder Damage: " + dmg);
+				updatePlayerHealthDisplay();
+				updateEnemyHealthDisplay();
 				playerRollLabel.setText(plyRoll + Integer.toString(battle.getSpecDiceRoll()));
 				playerDamageLabel.setText(plyDmg + Integer.toString(dmg));
 				
@@ -243,6 +273,8 @@ public class BattleScreen extends JFrame {
                             
 			}
 		});
+		
+		
 
 
 		buttonPanel.add(attackButton);
@@ -261,11 +293,10 @@ public class BattleScreen extends JFrame {
         damagePanel.add(enemyDamageLabel);
 
 
-		mainPanel.add(damagePanel, BorderLayout.CENTER);
-		mainPanel.add(player, BorderLayout.WEST);
-		mainPanel.add(enemy, BorderLayout.EAST);
-		// mainPanel.add(attackButton, BorderLayout.CENTER);
-		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(damagePanel, BorderLayout.CENTER);
+        mainPanel.add(playerPanel, BorderLayout.WEST);
+        mainPanel.add(enemyPanel, BorderLayout.EAST);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		add(mainPanel);
 	}
@@ -348,6 +379,12 @@ public class BattleScreen extends JFrame {
 		battle.setBossStats();
 	}
 	
-	
+	public void updatePlayerHealthDisplay() {
+        playerHealthLabel.setText("Player:" + battle.getPlyHlth() + "/" + battle.maxHealthPly());
+    }
+
+    public void updateEnemyHealthDisplay() {
+        enemyHealthLabel.setText(battle.getMonsterName() + ":" + battle.getEnemyHealth() + "/" + battle.getMaxEmyHealth());
+    }
 }
 

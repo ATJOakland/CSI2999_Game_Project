@@ -14,7 +14,7 @@ public class EnemyClass {
 	private int enemyDefense;
 	private int enemyAttack;
 	private int maxHealth;
-	//private int weakness;
+	private int weakness;
 	private static final Map<String, int[]> enemyStatsCache = new HashMap<>();
 
 	public EnemyClass(int level, String type) {
@@ -24,7 +24,7 @@ public class EnemyClass {
         this.enemyAttack = stats[0] + (level - 1) * 2;
         this.enemyDefense = stats[2] + (level - 1) * 2;
         this.maxHealth = stats[1] + (level - 1) * 10;
-       // this.weakness = stats[3];
+        this.weakness = stats[3];
        
 	}
 	public int getEnemyHealth() {
@@ -50,9 +50,9 @@ public class EnemyClass {
 	public void setEnemyAttack(int enemyAttack) {
 		this.enemyAttack = enemyAttack;
 	}
-	//public int getWeakness() {
-	//	return weakness;
-	//}
+	public int getWeakness() {
+		return weakness;
+	}
 	public int getMaxHealth() {
 		return maxHealth;
 	}
@@ -70,11 +70,11 @@ public class EnemyClass {
 	        while ((line = reader.readLine()) != null) {
 	            // Assuming the file format is: Type,Health,Attack,Defense
 	            String[] parts = line.split(",");
-	            if (parts.length == 4 && parts[0].trim().equalsIgnoreCase(enemyType)) {
+	            if (parts.length == 5 && parts[0].trim().equalsIgnoreCase(enemyType)) {
 	                stats[0] = Integer.parseInt(parts[2].trim()); // Attack
 	                stats[1] = Integer.parseInt(parts[1].trim()); // Health
 	                stats[2] = Integer.parseInt(parts[3].trim()); // Defense
-	                stats[3] = Integer.parseInt(parts[3].trim()); // Element weakness
+	                stats[3] = Integer.parseInt(parts[4].trim()); // Element weakness
 	                break;
 	            }
 	        }

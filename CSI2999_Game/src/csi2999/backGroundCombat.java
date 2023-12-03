@@ -21,7 +21,7 @@ public class backGroundCombat {
 	private characterClass player;
 	private EnemyClass enemy;
 	String monsterName;
-
+	private int elemMinus = 3;
 	// creating my dice object
 	private randomNumberClass twentySideDice = new randomNumberClass();
 	public backGroundCombat(int level, boolean boss) {
@@ -207,7 +207,7 @@ public class backGroundCombat {
 	}
 	public int applySpecialDamage(String type) {
         int specialDamage = 0;
-        int bonus = 0;//setWeakNess();
+        int bonus = setWeakNess();
         setSpecDiceRoll();
         switch (type) {
             case "Ice":
@@ -220,23 +220,24 @@ public class backGroundCombat {
                 specialDamage = calculateThunderDamage(bonus);
                 break;
         }
-        this.enemyHealth -= specialDamage;
+        //this.enemyHealth -= specialDamage;
         return specialDamage;
     }
+	
 	private int calculateIceDamage(int bonus) {
-		return  this.iceDmg + this.specDiceRoll - 8 + bonus;
+		return  this.iceDmg + this.specDiceRoll - elemMinus + bonus;
 
     }
 
     private int calculateFireDamage(int bonus) {
     
-		return  this.fireDmg + this.specDiceRoll - 8 + bonus;
+		return  this.fireDmg + this.specDiceRoll - elemMinus + bonus;
     
     }
 
     private int calculateThunderDamage(int bonus) {
    
-		return this.thunderDmg + this.specDiceRoll - 8 + bonus;
+		return this.thunderDmg + this.specDiceRoll - elemMinus + bonus;
     
     }
     
@@ -265,21 +266,21 @@ public class backGroundCombat {
         this.emyDiceRoll = 0;
         this.specDiceRoll = 0;
     }
-    /*private int setWeakNess() {
+    private int setWeakNess() {
     	int dmg = 10;
     	int noDmg = 0;
     	switch(enemy.getWeakness()) {
-	    	case 0: 
-	    		return dmg;
 	    	case 1: 
 	    		return dmg;
-	    	case 2:
+	    	case 2: 
+	    		return dmg;
+	    	case 3:
 	    		return dmg;
 	    	default:
-	    		return noDmg;*/
+	    		return noDmg;
 	    		
-    	//}
-    //}
+    	}
+    }
     public void setBossStats() {
     	int health, attack, defense;
     	health = 375;
