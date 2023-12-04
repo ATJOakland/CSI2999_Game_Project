@@ -2,7 +2,7 @@ package characters;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
+import java.awt.Rectangle;
 import csi2999.GamePanel;
 import csi2999.UserInput;
 import tiles.TileManager;
@@ -18,6 +18,8 @@ public class Player extends DefaultCharacter {
 	public Player (GamePanel gamePanel, UserInput userInput) {
 		this.gamePanel = gamePanel;
 		this.userInput = userInput;
+
+		solidArea = new Rectangle(4,14,12,6);
 		
 		SetDefaultValues(); //Sets the defaults
 	}
