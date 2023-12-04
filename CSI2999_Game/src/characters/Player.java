@@ -3,6 +3,10 @@ package characters;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import csi2999.GamePanel;
 import csi2999.UserInput;
 import tiles.TileManager;
@@ -33,6 +37,27 @@ public class Player extends DefaultCharacter {
 		tempPosY = posY;
 		
 		characterSpeed = 2;
+	}
+
+	public void getPlayerImage() {
+		//read character image files
+		try {
+			up = ImageIO.read(new FileInputStream(new File("res/player/guy_idle_up.png")));
+			down = ImageIO.read(new FileInputStream(new File("res/player/guy_down_idle.png")));
+			left = ImageIO.read(new FileInputStream(new File("res/player/guy_idle_left.png")));
+			right = ImageIO.read(new FileInputStream(new File("res/player/guy_idle_right.png")));
+			up1 = ImageIO.read(new FileInputStream(new File("res/player/guy_up_1.png")));
+			up2 = ImageIO.read(new FileInputStream(new File("res/player/guy_up_2.png")));
+			down1 = ImageIO.read(new FileInputStream(new File("res/player/guy_down_1.png")));
+			down2 = ImageIO.read(new FileInputStream(new File("res/player/guy_down_2.png")));
+			left1 = ImageIO.read(new FileInputStream(new File("res/player/guy_left_1.png")));
+			left2 = ImageIO.read(new FileInputStream(new File("res/player/guy_left_2.png")));
+			right1 = ImageIO.read(new FileInputStream(new File("res/player/guy_right_1.png")));
+			right2 = ImageIO.read(new FileInputStream(new File("res/player/guy_right_2.png")));
+		} catch (IOException e) {
+			//exception if files can't be read
+			e.printStackTrace();
+		}
 	}
 	
 	public void resetPlayer() {
