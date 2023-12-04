@@ -54,7 +54,7 @@ public class GamePanel extends JPanel implements Runnable{
 	UserInput userInput = new UserInput();
 	// Gets a reference to the player in the characters package
 	Player player = new Player(this, userInput);
-	
+	public ColCheck c = new ColCheck(this);
 	// Create the tile manager
 	TileManager tileManager;
 	///////////////////////////////////////////////////////////////
