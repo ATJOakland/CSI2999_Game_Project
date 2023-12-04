@@ -30,6 +30,9 @@ public class GamePanel extends JPanel implements Runnable{
 	final int scale = 3; //For scaling up the tiles
 	public final int tileSize = defaultTileSize * scale; // Scales up or down the tile size.
 	
+	// setting up audio
+	AudioPlayer music = new AudioPlayer();
+	
 	// setting a count and creating objects for the battle system.
 	private int battleCnt = 0;
 	private final int maxBattle = 1000;
@@ -72,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void start(int levelNumber) {
         // Changes which map to load
         System.out.println("Level Number: " + levelNumber);
+        
         
         // Initialize the tile manager
         tileManager = new TileManager(this, levelNumber);
@@ -134,6 +138,9 @@ public class GamePanel extends JPanel implements Runnable{
 		long timer = 0;
 		int drawCount = 0;
 		
+		 // Start the music in a separate thread
+	    new Thread(() -> music.playSound("2021-08-16_-_8_Bit_Adventure_-_www.FesliyanStudios.com.wav")).start();
+
 		// While the game is not stopped/exists
 		while (gameThread != null) {
 			// The clock for delta and the timer.
@@ -141,6 +148,7 @@ public class GamePanel extends JPanel implements Runnable{
 			delta += (currentTime - lastTime) / drawInterval;
 			timer += (currentTime - lastTime);
 			lastTime = currentTime;
+			
 			
 			// When delta is greater or equal to 1, update everything and repaint the screen.
 			if (delta >= 1) {
@@ -179,6 +187,8 @@ public class GamePanel extends JPanel implements Runnable{
 			// Check if the player is in the vicinity of the winning tile
 	        if (isInWinningTileVicinity(tileManager.winTileX, tileManager.winTileY)) {
 	        	if (player.currentLevel < 3) {
+	        		// start music
+	                
 			        System.out.println("Level Done. Moving on.");
 			        JOptionPane.showMessageDialog(null, "You have to find the evil commander and stop him!!!");
 		            player.currentLevel += 1;
@@ -188,7 +198,11 @@ public class GamePanel extends JPanel implements Runnable{
 	        	else if (player.currentLevel >= 3) { // When the player finishes then do this
 	        		boolean bossBattle = true;
 	        		battle.dispose();
-	        		JOptionPane.showMessageDialog(null, "You have found the evil commander!!! \nThe world needs you to save it.\nYou have been healed\nBATTLE!!!");
+	        		//music.stopMusic();
+	        	
+	        		// Start the music in a separate thread
+	        	    //new Thread(() -> music.playSound("2021-08-30_-_Boss_Time_-_www.FesliyanStudios.com.wav")).start();
+	        		//JOptionPane.showMessageDialog(null, "You have found the evil commander!!! \nThe world needs you to save it.\nYou have been healed\nBATTLE!!!");
 	        		finalBattle();
 	        		System.out.println("You beat the game!");
 	                stopGame(); // Call method to stop the game thread
