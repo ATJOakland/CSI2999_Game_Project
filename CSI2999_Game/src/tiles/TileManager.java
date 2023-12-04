@@ -3,7 +3,9 @@ package tiles;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +16,9 @@ import csi2999.GamePanel;
 
 public class TileManager {
 	GamePanel gamePanel;
-	Tile[]  tile;
+	public Tile[]  tile;
 	
-	int mapTileNumber[][];
+	public int mapTileNumber[][];
 
     public int winTileX ;
     public int winTileY;
@@ -64,22 +66,25 @@ public class TileManager {
 	public void getTileImage() {
 		try {
 			tile[0] = new Tile();
-			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/grass.png"));
+			tile[0].image = ImageIO.read(new FileInputStream(new File("CSI2999_Game/res/background_tiles/grass.png")));
 			
 			tile[1] = new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/Grey Brick 16x16.png"));
+			tile[1].image = ImageIO.read(new FileInputStream(new File("CSI2999_Game/res/background_tiles/Grey Brick 16x16.png")));
+			tile[1].collision = true;
 			
 			tile[2] = new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/Water 16x16.png"));
+			tile[2].image = ImageIO.read(new FileInputStream(new File("CSI2999_Game/res/background_tiles/Water 16x16.png")));
 			
 			tile[3] = new Tile();
-			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/Dirt 16x16.png"));
+			tile[3].image = ImageIO.read(new FileInputStream(new File("CSI2999_Game/res/background_tiles/Dirt 16x16.png")));
 			
 			tile[4] = new Tile();
-			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/Red Brick 16x16.png"));
+			tile[4].image = ImageIO.read(new FileInputStream(new File("CSI2999_Game/res/background_tiles/Red Brick 16x16.png")));
+			tile[4].collision = false;
 			
 			tile[5] = new Tile();
-			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/background_tiles/wall.png"));
+			tile[5].image = ImageIO.read(new FileInputStream(new File("CSI2999_Game/res/background_tiles/wall.png")));
+			tile[5].collision = false;
 		}catch(IOException e) {
 			e.printStackTrace();
 		}

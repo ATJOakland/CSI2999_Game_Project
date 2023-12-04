@@ -57,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable{
 	UserInput userInput = new UserInput();
 	// Gets a reference to the player in the characters package
 	Player player = new Player(this, userInput);
-	
+	public ColCheck c = new ColCheck(this);
 	// Create the tile manager
 	TileManager tileManager;
 	///////////////////////////////////////////////////////////////
@@ -90,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable{
         	case 1:
         		System.out.println(levelNumber);
         		battle.dispose();
+        		player.resetPlayer();
         		battle = new BattleScreen(2, flag);
         		JOptionPane.showMessageDialog(null, "You've reached his lair, just a little further!");
         		break;
@@ -139,7 +140,7 @@ public class GamePanel extends JPanel implements Runnable{
 		int drawCount = 0;
 		
 		 // Start the music in a separate thread
-	    new Thread(() -> music.playSound("2021-08-16_-_8_Bit_Adventure_-_www.FesliyanStudios.com.wav")).start();
+	    new Thread(() -> music.playSound("CSI2999_Game/res/2021-08-16_-_8_Bit_Adventure_-_www.FesliyanStudios.com.wav")).start();
 
 		// While the game is not stopped/exists
 		while (gameThread != null) {
@@ -250,6 +251,7 @@ public class GamePanel extends JPanel implements Runnable{
 		// Checks the player's movement
 		// If NOT in a battle then update the player
 		if(isBattleActive == false) {
+			player.characterSpeed = 2;
 			player.update(); // Player's movement is handled in the Player class in characters
 		}
 		else if (isBattleActive == true) { // If Battle activates then stop all movement from the player until it's over
