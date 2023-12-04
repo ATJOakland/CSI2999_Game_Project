@@ -10,8 +10,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import swingPackage.LevelTwo;
-import swingPackage.UserInput;
+import csi2999.GamePanel;
+import csi2999.UserInput;
 
 public class Player extends DefaultCharacter {
 	// References to the first level and user input
